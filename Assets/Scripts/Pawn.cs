@@ -8,6 +8,11 @@ public class Pawn : MonoBehaviour
 
     Vector2 position;
 
+    public void GetMoveableArea()
+	{
+
+	}
+
     public void Move(Vector2 newPosition)
 	{
 

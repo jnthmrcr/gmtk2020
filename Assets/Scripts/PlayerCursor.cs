@@ -6,6 +6,8 @@ public class PlayerCursor : MonoBehaviour
 {
 	[SerializeField] GameObject enemyRangeIndicator;
 	[SerializeField] LayerMask enemyMask;
+	[SerializeField] float curorLerpSpeed = 20f;
+	Vector3 goalPoint;
 
 	private void Start()
 	{
@@ -17,12 +19,13 @@ public class PlayerCursor : MonoBehaviour
 	{
 		Vector2 mouse = Input.mousePosition;
 		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouse.x, mouse.y, Camera.main.transform.position.y));
-		transform.position = new Vector3(Mathf.Round(worldPoint.x), 0, Mathf.Round(worldPoint.z));
+		goalPoint = new Vector3(Mathf.Round(worldPoint.x), 0, Mathf.Round(worldPoint.z));
+		transform.position = Vector3.Lerp(transform.position, goalPoint, Time.deltaTime * curorLerpSpeed);
 
-		if (Physics.CheckSphere(transform.position, 0.1f, enemyMask))
+		if (Physics.CheckSphere(goalPoint, 0.1f, enemyMask))
 		{
 			enemyRangeIndicator.SetActive(true);
-			enemyRangeIndicator.transform.position = transform.position;
+			enemyRangeIndicator.transform.position = goalPoint;
 		}
 		else
 		{

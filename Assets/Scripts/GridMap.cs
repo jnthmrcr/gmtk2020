@@ -6,7 +6,7 @@ public class GridMap : MonoBehaviour
 {
 	public LayerMask unwalkableMask;
 	public Vector2Int mapWorldSize;
-	GridNode[,] map;
+	public static GridNode[,] map;
 
 	int mapSizeX, mapSizeY;
 
@@ -78,5 +78,19 @@ public class GridMap : MonoBehaviour
 				Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
 			}
 		}
+	}
+
+	public PawnMap GrabPawnMap(int minX, int minY, int sizeX, int sizeY)
+	{
+		PawnMap pawnMap = new PawnMap(minX, minY, sizeX, sizeY);
+
+		for (int x = 0; x < sizeX; x++)
+		{
+			for (int y = 0; y < sizeY; y++)
+			{
+				pawnMap.map[x, y] = map[minX + x, minY + y];
+			}
+		}
+		return pawnMap;
 	}
 }

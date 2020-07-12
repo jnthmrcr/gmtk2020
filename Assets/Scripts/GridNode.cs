@@ -9,6 +9,9 @@ public class GridNode
 	public int gridX;
 	public int gridY;
 
+	public int cost = 0;
+	public GridNode parent;
+
 	public GridNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
 	{
 		walkable = _walkable;

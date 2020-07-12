@@ -33,6 +33,8 @@ public class GameCamera : MonoBehaviour
 
         camZoom -= Input.GetAxisRaw("Mouse ScrollWheel") * cameraZoomSensitivity;
 
+        camZoom = Mathf.Clamp(camZoom, -25f, 70f);
+
         camPosition += input;
         transform.position = Vector3.Lerp(transform.position, camPosition.toV3(35f + camZoom), Time.deltaTime * cameraTrackingLerp);
     }

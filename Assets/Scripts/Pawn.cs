@@ -13,6 +13,9 @@ public class Pawn : MonoBehaviour
     Vector2 position;
 	protected int moveDist = 4;
 
+	List<GridNode> navigableNodes;
+	List<GridNode> attackableNodes;
+
     public void GetMoveableArea(Vector3 startPos, int distance, int windX = 0, int windY = 0)
 	{
 		// get a map to search through
@@ -37,7 +40,7 @@ public class Pawn : MonoBehaviour
 		GridNode startNode = pMap.NodeFromWorldPosition(startPos);
 		startNode.cost = 0; // cost should already be zero but whatever
 
-		List<GridNode> navigableNodes = new List<GridNode>();
+		navigableNodes = new List<GridNode>();
 
 		navigableNodes.Add(startNode); // add start node to navigable nodes
 

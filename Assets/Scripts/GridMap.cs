@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class GridMap : MonoBehaviour
@@ -29,9 +28,32 @@ public class GridMap : MonoBehaviour
 			{
 				Vector3 worldpoint = worldBottomLeft + Vector3.right * (x + 0.5f) + Vector3.forward * (y + 0.5f);
 				bool walkable = !(Physics.CheckSphere(worldpoint, 0.4f, unwalkableMask));
-				map[x, y] = new GridNode(walkable, worldpoint);
+				map[x, y] = new GridNode(walkable, worldpoint, x, y);
 			}
 		}
+	}
+
+	public List<GridNode> GetNeighbors(GridNode node)
+	{
+		List<GridNode> neighbors = new List<GridNode>();
+
+		for (int x = -1; x <= 1; x++)
+		{
+			for (int y = -1; y <= 1; y++)
+			{
+				if (x == 0 && y == 0) continue;
+
+				int checkX = node.gridX + x;
+				int checkY = node.gridY + y;
+
+				if (checkX >= 0 && checkX < mapSizeX && checkY >= 0 && checkY < mapSizeY)
+				{
+					neighbors.Add(map[checkX, checkY]);
+				}
+			}
+		}
+
+		return neighbors;
 	}
 
 	public GridNode NodeFromWorldPosition(Vector3 worldPosition)

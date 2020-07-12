@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour
 {
     [SerializeField] GameObject menu;
     [SerializeField] GameObject howto;
     [SerializeField] GameObject menuBG;
+    [SerializeField] Text startText;
 
     bool gamestarted = false;
     bool inmenu = false;
@@ -57,12 +59,14 @@ public class GUIManager : MonoBehaviour
 
     public void BtnForcast()
 	{
-
+        inforcast = true;
+        menuBG.SetActive(true);
 	}
 
     public void exitForcast()
 	{
-        
+        inforcast = false;
+        menuBG.SetActive(false);
 	}
 
     public void BtnMenu()
@@ -97,6 +101,13 @@ public class GUIManager : MonoBehaviour
         inmenu = false;
         menuBG.SetActive(false);
         menu.SetActive(false);
+
+        if (!gamestarted)
+		{
+            // start the game
+            gamestarted = true;
+            startText.text = "back";
+		}
     }
 
     public void BtnExit()

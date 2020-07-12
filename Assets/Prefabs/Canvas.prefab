@@ -1876,6 +1876,7 @@ MonoBehaviour:
   menu: {fileID: 1740270776}
   howto: {fileID: 1131717213}
   menuBG: {fileID: 7609636240927428209}
+  startText: {fileID: 177761358}
 --- !u!1 &7609636240927428209
 GameObject:
   m_ObjectHideFlags: 0

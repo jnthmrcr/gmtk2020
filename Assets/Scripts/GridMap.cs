@@ -6,7 +6,7 @@ public class GridMap : MonoBehaviour
 {
 	public LayerMask unwalkableMask;
 	public Vector2Int mapWorldSize;
-	public static GridNode[,] map;
+	public GridNode[,] map;
 
 	int mapSizeX, mapSizeY;
 
@@ -61,7 +61,7 @@ public class GridMap : MonoBehaviour
 		float percentX = Mathf.Clamp01((worldPosition.x + mapSizeX / 2) / mapSizeX);
 		float percentY = Mathf.Clamp01((worldPosition.z + mapSizeY / 2) / mapSizeY);
 
-		int x = Mathf.RoundToInt((mapSizeX - 1) * percentX);
+		int x = Mathf.RoundToInt((mapSizeX - 1) * percentX) + 1;
 		int y = Mathf.RoundToInt((mapSizeY - 1) * percentY);
 		return map[x, y];
 	}

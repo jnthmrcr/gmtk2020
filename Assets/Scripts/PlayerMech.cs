@@ -20,7 +20,7 @@ public class PlayerMech : Pawn
 		//	}
 		//}
 
-
+		print(navigableNodes.Count);
 		foreach (GridNode n in navigableNodes)
 		{
 			Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -47,74 +48,25 @@ public class Pawn : MonoBehaviour
 		startNode.windCostX = windX;
 		startNode.windCostY = windY;
 
-		navigableNodes = new List<GridNode>();
-		attackableNodes = new List<GridNode>();
-		List<GridNode> neighbors;
+		navigableNodes = new List<GridNode>(); // list of nodes we can navigate to, nodes have parent and cost
+		List<GridNode> nodesToEval = new List<GridNode>(); // nodes to evaluate
+		List<GridNode> neighbors = new List<GridNode>(); // neighbors of evaluated nodes
 
-		navigableNodes.Add(startNode); // add start node to navigable nodes
-		navigableNodes.AddRange(pMap.GetImmediateNeighbors(startNode));
+		nodesToEval.Add(startNode); // add start node to navigable nodes
+		int cost = 1;
 
-		for (int i = 0; i < navigableNodes.Count; i++) // create list of navigable nodes, starting with start node
+		for (int i = 0; i < nodesToEval.Count; i++)
 		{
-			// get neighbors of current navigableNode
-			neighbors = pMap.GetImmediateNeighbors(navigableNodes[i]);
-			for (int j = 0; j < neighbors.Count; j++)
-			{
-				// is neighbor walkable
-				if (neighbors[j].walkable)
-				{
-					int newCost = navigableNodes[i].cost++; // what the neighbor could cost
-					if (newCost <= moveDist) // if the newcost is navigable
-					{
-						// does neighbor have cost/parent
-						if (neighbors[j].cost > newCost) // if new cost is lower, replace old cost/parent
-						{
-							neighbors[j].cost = newCost;
-							neighbors[j].parent = navigableNodes[i].parent;
-							navigableNodes.Add(neighbors[j]); // neighbors have passed all test, can be added to navigable nodes safely
-						}
-					}
-				}
-			}
+			neighbors.AddRange(pMap.GetImmediateNeighbors(nodesToEval[i]));
 		}
-	}
 
-	public void FindAttackableNodes(Vector3 startPos, int distance, int windX = 0, int windY = 0)
-	{
-		GridNode startNode = pMap.NodeFromWorldPosition(startPos, transform.position);
-		startNode.cost = 0; // cost should already be zero but whatever
-		startNode.windCostX = windX;
-		startNode.windCostY = windY;
-
-		navigableNodes = new List<GridNode>();
-		attackableNodes = new List<GridNode>();
-		List<GridNode> neighbors;
-
-		navigableNodes.Add(startNode); // add start node to navigable nodes
-
-		for (int i = 0; i < navigableNodes.Count; i++) // create list of navigable nodes, starting with start node
+		foreach (GridNode n in neighbors)
 		{
-			// get neighbors of current navigableNode
-			neighbors = pMap.GetImmediateNeighbors(navigableNodes[i]);
-			for (int j = 0; j < neighbors.Count; j++)
-			{
-				// is neighbor walkable
-				if (neighbors[j].walkable)
-				{
-					int newCost = navigableNodes[i].cost++; // what the neighbor could cost
-					if (newCost <= moveDist) // if the newcost is navigable
-					{
-						// does neighbor have cost/parent
-						if (neighbors[j].cost > newCost) // if new cost is lower, replace old cost/parent
-						{
-							neighbors[j].cost = newCost;
-							neighbors[j].parent = navigableNodes[i].parent;
-							navigableNodes.Add(neighbors[j]); // neighbors have passed all test, can be added to navigable nodes safely
-						}
-					}
-				}
-			}
+			// cost test
 		}
+
+		navigableNodes.AddRange(neighbors);
+		
 	}
 
 	int GetDistance(GridNode nodeA, GridNode nodeB)

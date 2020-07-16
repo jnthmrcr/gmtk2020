@@ -6,8 +6,8 @@ public class GridNode
 {
 	public bool walkable;
 	public Vector3 worldPosition;
-	public int gridX;
-	public int gridY;
+	public int gridX, pGridX;
+	public int gridY, pGridY;
 
 	public int cost = 0;
 	public int windCostX = 0;

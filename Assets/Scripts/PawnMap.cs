@@ -56,17 +56,17 @@ public class PawnMap
 	{
 		List<GridNode> neighbors = new List<GridNode>();
 
-		int checkX = node.gridX + 1;
-		int checkY = node.gridY + 0;
+		int checkX = node.pGridX + 1;
+		int checkY = node.pGridY + 0;
 		NeighborCheck(checkX, checkY, ref neighbors);
-		checkX = node.gridX - 1;
-		checkY = node.gridY + 0;
+		checkX = node.pGridX - 1;
+		checkY = node.pGridY + 0;
 		NeighborCheck(checkX, checkY, ref neighbors);
-		checkX = node.gridX + 0;
-		checkY = node.gridY + 1;
+		checkX = node.pGridX + 0;
+		checkY = node.pGridY + 1;
 		NeighborCheck(checkX, checkY, ref neighbors);
-		checkX = node.gridX + 0;
-		checkY = node.gridY - 1;
+		checkX = node.pGridX + 0;
+		checkY = node.pGridY - 1;
 		NeighborCheck(checkX, checkY, ref neighbors);
 
 		return neighbors;

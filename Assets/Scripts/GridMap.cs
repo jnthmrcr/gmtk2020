@@ -89,6 +89,8 @@ public class GridMap : MonoBehaviour
 			for (int y = 0; y < sizeY; y++)
 			{
 				pawnMap.map[x, y] = map[minX + x, minY + y];
+				pawnMap.map[x, y].pGridX = x;
+				pawnMap.map[x, y].pGridY = y;
 			}
 		}
 		return pawnMap;

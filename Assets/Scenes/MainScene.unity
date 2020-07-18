@@ -465,6 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gMap: {fileID: 1000720771}
+  moveDist: 20
 --- !u!65 &52102615
 BoxCollider:
   m_ObjectHideFlags: 0

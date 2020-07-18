@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapNode : MonoBehaviour
+public class MapNode
 {
 	public bool walkable;
 	public Vector3 worldPosition;
-	public int gridX;
-	public int gridY;
+	/// <summary> stores position in the mapgrid <summary>
+	public int gridX, gridY;
 
 	public int cost = 0;
-	public int windCostX = 0;
-	public int windCostY = 0;
-	public GridNode parent;
+	public MapNode parent;
 	// ref to either the obstacle or pawn on this node
 
 	public MapNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)

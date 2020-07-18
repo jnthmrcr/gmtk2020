@@ -12,8 +12,8 @@ public class GridMap : MonoBehaviour
 
 	private void Start()
 	{
-		mapSizeX = Mathf.RoundToInt(mapWorldSize.x);
-		mapSizeY = Mathf.RoundToInt(mapWorldSize.y);
+		mapSizeX = mapWorldSize.x;
+		mapSizeY = mapWorldSize.y;
 		CreateMap();
 	}
 
@@ -61,8 +61,8 @@ public class GridMap : MonoBehaviour
 		float percentX = Mathf.Clamp01((worldPosition.x + mapSizeX / 2) / mapSizeX);
 		float percentY = Mathf.Clamp01((worldPosition.z + mapSizeY / 2) / mapSizeY);
 
-		int x = Mathf.RoundToInt((mapSizeX - 1) * percentX) + 1;
-		int y = Mathf.RoundToInt((mapSizeY - 1) * percentY);
+		int x = Mathf.RoundToInt((mapSizeX - 1f) * percentX) + 1;
+		int y = Mathf.RoundToInt((mapSizeY - 1f) * percentY);
 		return map[x, y];
 	}
 

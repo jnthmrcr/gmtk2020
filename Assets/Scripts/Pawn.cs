@@ -11,7 +11,7 @@ public class Pawn : MonoBehaviour
 
 	public GridMap gMap;
 	protected PawnMap pMap;
-	protected int moveDist = 4;
+	[SerializeField] protected int moveDist = 4;
 	protected int attackDist = 4;
 
 	protected List<GridNode> navigableNodes;
@@ -53,20 +53,48 @@ public class Pawn : MonoBehaviour
 		List<GridNode> neighbors = new List<GridNode>(); // neighbors of evaluated nodes
 
 		nodesToEval.Add(startNode); // add start node to navigable nodes
-		int cost = 1;
 
-		for (int i = 0; i < nodesToEval.Count; i++)
+		for (int cost = 1; cost < moveDist + 1; cost++)
 		{
-			neighbors.AddRange(pMap.GetImmediateNeighbors(nodesToEval[i]));
-		}
+			// get neighbors of eval nodes
+			for (int i = 0; i < nodesToEval.Count; i++)
+			{
+				neighbors.AddRange(pMap.GetImmediateNeighbors(nodesToEval[i]));
+			}
 
-		foreach (GridNode n in neighbors)
-		{
+			nodesToEval.Clear();
+
+			print(neighbors.Count);
 			// cost test
-		}
+			foreach (GridNode n in neighbors)
+			{
+				//if (n.walkable)
+				//{
+					//if (n.cost > cost) // if a nodes previous cost is greater than the new cost
+					//{
+						// replace cost and parent
+						//n.cost = cost;
+						//n.parent =    fuck...
 
-		navigableNodes.AddRange(neighbors);
-		
+						//nodesToEval.Add(n);
+						//navigableNodes.Add(n);
+					//print(navigableNodes.Count);
+					//}
+				//}
+				//neighbors.Remove(n);
+			}
+
+			for (int i = 0; i < neighbors.Count; i++)
+			{
+				if (neighbors[i].walkable)
+				{
+				navigableNodes.Add(neighbors[i]);
+				nodesToEval.Add(neighbors[i]);
+				neighbors.Remove(neighbors[i]);
+				}
+			}
+
+		}
 	}
 
 	int GetDistance(GridNode nodeA, GridNode nodeB)

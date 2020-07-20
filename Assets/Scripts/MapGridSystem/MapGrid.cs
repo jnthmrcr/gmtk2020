@@ -35,7 +35,7 @@ public class MapGrid
 			{
 				submap.nodes[x, y] = nodes[minX + x, minY + y];
 				submap.nodes[x, y].gridX = x;
-				submap.nodes[x, y].gridX = y;
+				submap.nodes[x, y].gridY = y;
 			}
 		}
 

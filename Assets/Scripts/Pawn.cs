@@ -21,25 +21,6 @@ public class Pawn : MonoBehaviour
 	protected List<GridNode> navigableNodes;
 	protected List<GridNode> attackableNodes;
 
-    public void GetPMap(Vector3 startPos, int distance, int windX = 0, int windY = 0)
-	{
-		// get a map to search through
-		GridNode startNode = gMap.NodeFromWorldPosition(startPos);
-		pMap = gMap.GrabPawnMap(
-			startNode.gridX - (Mathf.Max(distance + windX, distance - windX)), // min x
-			startNode.gridY - (Mathf.Max(distance + windY, distance - windY)), // min y
-			distance * 2 + 1 + Mathf.Abs(windX), // size x
-			distance * 2 + 1 + Mathf.Abs(windY)); // size y
-
-		Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.red, 0.1f);
-		startNode = pMap.NodeFromWorldPosition(startNode.worldPosition, transform.position);
-		Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.green, 0.1f);
-
-
-		// draw nav
-		FindNavigableNodes(startPos, distance, windX, windY);
-	}
-
 	public void GetPersonalMap(Vector3 startPos, int distance)
 	{
 		MapNode startNode = mainMap.grid.NodeFromWorldPosition(startPos);

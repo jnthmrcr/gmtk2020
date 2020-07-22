@@ -33,9 +33,9 @@ public class MapGrid
 		{
 			for (int y = 0; y < sizeY; y++)
 			{
-				submap.nodes[x, y] = nodes[minX + x, minY + y];
-				submap.nodes[x, y].gridX = x;
-				submap.nodes[x, y].gridY = y;
+				MapNode subMapNode = nodes[minX + x, minY + y];
+				MapNode newNode = new MapNode(subMapNode.walkable, subMapNode.worldPosition, x, y); // copy values, not reference
+				submap.nodes[x, y] = newNode;
 			}
 		}
 
@@ -46,11 +46,12 @@ public class MapGrid
 	{
 		float percentX = Mathf.Clamp01((worldPosition.x + sizeX / 2f) / sizeX);
 		float percentY = Mathf.Clamp01((worldPosition.z + sizeY / 2f) / sizeY);
-
-		int x = Mathf.RoundToInt((sizeX - 1f) * percentX);
-		int y = Mathf.RoundToInt((sizeY - 1f) * percentY);
-		MapNode returnNode = nodes[x, y];
+		int indexX = NodeIndex(percentX);
+		int indexY = NodeIndex(percentY);
+		MapNode returnNode = nodes[indexX, indexY];
 		return returnNode;
+
+		int NodeIndex(float percent) { return Mathf.RoundToInt((sizeX - 1f) * percent); }
 	}
 
 	public MapNode GetNodeInParentMap(int posX, int posY)

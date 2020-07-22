@@ -8,10 +8,10 @@ public class PlayerMech : Pawn
 {
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
+		//if (Input.GetKeyDown(KeyCode.Space))
+		//{
 			GetPersonalMap(transform.position, moveDist);
-		}
+		//}
 	}
 
 	private void OnDrawGizmos()

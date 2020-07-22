@@ -23,22 +23,23 @@ public class Pawn : MonoBehaviour
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
 	{
-		MapNode startNode = mainMap.grid.NodeFromWorldPosition(startPos);
-		print(startNode.worldPosition);
+		MapNode startNode = mainMap.grid.NodeFromWorldPosition(startPos + new Vector3(-distance, 0, -distance));
+		//print("startnotede " + startNode.gridX + " " + startNode.gridY);
 		personalMap = mainMap.grid.GetSubMap(
 			distance * 2 + 1,
 			distance * 2 + 1,
-			startNode.gridX - distance,
-			startNode.gridY - distance);
+			startNode.gridX,
+			startNode.gridY,
+			mainMap.grid);
 
-		Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.red, 0.1f);
-		startNode = mainMap.grid.NodeFromWorldPosition(startNode.worldPosition);
-		Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.green, 0.1f);
+		//Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.red, 0.1f);
+		//startNode = personalMap.NodeFromWorldPosition(startNode.worldPosition);
+		//Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.green, 0.1f);
 
-		foreach(MapNode n in personalMap.nodes)
-		{
-			Debug.DrawLine(n.worldPosition + Vector3.one * 0.25f, n.worldPosition + Vector3.one * 0.25f + Vector3.up, Color.green, 0.1f);
-		}
+		//foreach(MapNode n in personalMap.nodes)
+		//{
+			//Debug.DrawLine(n.worldPosition + Vector3.one * 0.25f, n.worldPosition + Vector3.one * 0.25f + Vector3.up, Color.green, 0.1f);
+		//}
 	}
 
 	public void Move(Vector2 newPosition)

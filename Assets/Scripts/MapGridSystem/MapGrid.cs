@@ -24,9 +24,9 @@ public class MapGrid
 	}
 
 	/// <summary> get subsection of the map for pawn use </summary>
-	public MapGrid GetSubMap(int sizeX, int sizeY, int minX, int minY)
+	public MapGrid GetSubMap(int sizeX, int sizeY, int minX, int minY, MapGrid parent)
 	{
-		MapGrid submap = new MapGrid(sizeX, sizeY, minX, minY, this);
+		MapGrid submap = new MapGrid(sizeX, sizeY, minX, minY, parent);
 
 		// populate submap
 		for (int x = 0; x < sizeX; x++)
@@ -49,7 +49,8 @@ public class MapGrid
 
 		int x = Mathf.RoundToInt((sizeX - 1f) * percentX);
 		int y = Mathf.RoundToInt((sizeY - 1f) * percentY);
-		return nodes[x, y];
+		MapNode returnNode = nodes[x, y];
+		return returnNode;
 	}
 
 	public MapNode GetNodeInParentMap(int posX, int posY)

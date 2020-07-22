@@ -8,12 +8,25 @@ public class PlayerMech : Pawn
 {
 	private void Update()
 	{
-		GetPersonalMap(transform.position, moveDist);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			GetPersonalMap(transform.position, moveDist);
+		}
 	}
 
 	private void OnDrawGizmos()
 	{
-		Gizmos.DrawWireCube(transform.position, new Vector3(personalMap.sizeX, 1, personalMap.sizeY));
+		// draw personal map size
+		//Gizmos.DrawWireCube(transform.position, new Vector3(personalMap.sizeX, 1, personalMap.sizeY));
+
+		Gizmos.color = Color.cyan;
+		MapNode startNode = mainMap.grid.NodeFromWorldPosition(transform.position);
+		print(startNode.gridX + ", " + startNode.gridY);
+
+		Gizmos.DrawCube(startNode.worldPosition, Vector3.one);
+
+		print("startnotede " + startNode.gridX + " " + startNode.gridY);
+
 
 		//Handles.Label(transform.position + Vector3.back * (mapWorldSize.y + 1), grid.nodes.Length.ToString());
 

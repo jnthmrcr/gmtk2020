@@ -18,12 +18,11 @@ public class Pawn : MonoBehaviour
 	[SerializeField] protected int moveDist = 4;
 	protected int attackDist = 4;
 
-	protected List<GridNode> navigableNodes;
-	protected List<GridNode> attackableNodes;
+	protected List<MapNode> navigableNodes;
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
 	{
-		MapNode startNode = mainMap.grid.NodeFromWorldPosition(startPos + new Vector3(-distance, 0, -distance));
+		MapNode startNode = mainMap.grid.NodeFromWorldPosition(startPos + new Vector3(-distance, 0, -distance), Vector3.zero);
 		personalMap = mainMap.grid.GetSubMap(
 			distance * 2 + 1,
 			distance * 2 + 1,
@@ -39,14 +38,15 @@ public class Pawn : MonoBehaviour
 
 	public void FindNavigableNodes(Vector3 startPos, int distance, int windX = 0, int windY = 0)
 	{
-		GridNode startNode = pMap.NodeFromWorldPosition(startPos, transform.position);
+		MapNode startNode = personalMap.NodeFromWorldPosition(startPos, transform.position);
+		Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.cyan);
 		startNode.cost = 0; // cost should already be zero but whatever
-		startNode.windCostX = windX;
-		startNode.windCostY = windY;
+		//startNode.windCostX = windX;
+		//startNode.windCostY = windY;
 
-		navigableNodes = new List<GridNode>(); // list of nodes we can navigate to, nodes have parent and cost
-		List<GridNode> nodesToEval = new List<GridNode>(); // nodes to evaluate
-		List<GridNode> neighbors = new List<GridNode>(); // neighbors of evaluated nodes
+		navigableNodes = new List<MapNode>(); // list of nodes we can navigate to, nodes have parent and cost
+		List<MapNode> nodesToEval = new List<MapNode>(); // nodes to evaluate
+		List<MapNode> neighbors = new List<MapNode>(); // neighbors of evaluated nodes
 
 		nodesToEval.Add(startNode); // add start node to navigable nodes
 
@@ -55,41 +55,17 @@ public class Pawn : MonoBehaviour
 			// get neighbors of eval nodes
 			for (int i = 0; i < nodesToEval.Count; i++)
 			{
-				neighbors.AddRange(pMap.GetImmediateNeighbors(nodesToEval[i]));
+				// check 4 neighbors of current nodetoeval, add to navigable nodes if they pass all tests
+				CheckNeighbor(ref neighbors, nodesToEval[i], 1, 0, cost);
+				CheckNeighbor(ref neighbors, nodesToEval[i], -1, 0, cost);
+				CheckNeighbor(ref neighbors, nodesToEval[i], 0, 1, cost);
+				CheckNeighbor(ref neighbors, nodesToEval[i], 0, -1, cost);
+				// now we have a list of neighbors that pass, and are ready for next loop
 			}
 
 			nodesToEval.Clear();
-
-			print(neighbors.Count);
-			// cost test
-			foreach (GridNode n in neighbors)
-			{
-				//if (n.walkable)
-				//{
-					//if (n.cost > cost) // if a nodes previous cost is greater than the new cost
-					//{
-						// replace cost and parent
-						//n.cost = cost;
-						//n.parent =    fuck...
-
-						//nodesToEval.Add(n);
-						//navigableNodes.Add(n);
-					//print(navigableNodes.Count);
-					//}
-				//}
-				//neighbors.Remove(n);
-			}
-
-			for (int i = 0; i < neighbors.Count; i++)
-			{
-				if (neighbors[i].walkable)
-				{
-				navigableNodes.Add(neighbors[i]);
-				nodesToEval.Add(neighbors[i]);
-				neighbors.Remove(neighbors[i]);
-				}
-			}
-
+			nodesToEval.AddRange(neighbors); // evaluate our neighbors next loop
+			neighbors.Clear();
 		}
 	}
 
@@ -101,5 +77,30 @@ public class Pawn : MonoBehaviour
 		if (dstX > dstY)
 			return 2 * dstY + (dstX - dstY);
 		return 2 * dstX + (dstY - dstX);
+	}
+
+	void CheckNeighbor(ref List<MapNode> nodelist, MapNode node, int offX, int offY, int cost)
+	{
+		// get personal grid coordiantes of neighbor
+		int x = node.gridX + offX;
+		int y = node.gridY + offY;
+
+		MapNode neighbor = personalMap.nodes[x, y];
+
+		if (x >= 0 && x < personalMap.sizeX && y >= 0 && y < personalMap.sizeY)// is it actually in the grid
+		{
+			if (neighbor.walkable) // is it walkable
+			{
+				if (neighbor.cost > cost) // is it the shortest path to this node
+				{
+					// we good fam
+					neighbor.parent = node;
+					neighbor.cost = cost;
+
+					nodelist.Add(neighbor);
+					navigableNodes.Add(neighbor);
+				}
+			}
+		}
 	}
 }

@@ -10,7 +10,8 @@ public class PlayerMech : Pawn
 	{
 		//if (Input.GetKeyDown(KeyCode.Space))
 		//{
-			GetPersonalMap(transform.position, moveDist);
+		GetPersonalMap(transform.position, moveDist);
+		FindNavigableNodes(transform.position, moveDist);
 		//}
 	}
 
@@ -20,7 +21,7 @@ public class PlayerMech : Pawn
 		//Gizmos.DrawWireCube(transform.position, new Vector3(personalMap.sizeX, 1, personalMap.sizeY));
 
 		Gizmos.color = Color.cyan;
-		MapNode startNode = mainMap.grid.NodeFromWorldPosition(transform.position);
+		MapNode startNode = mainMap.grid.NodeFromWorldPosition(transform.position, Vector3.zero);
 		print(startNode.gridX + ", " + startNode.gridY);
 
 		Gizmos.DrawCube(startNode.worldPosition, Vector3.one);
@@ -32,20 +33,26 @@ public class PlayerMech : Pawn
 
 		if (personalMap != null)
 		{
-			foreach (MapNode n in personalMap.nodes)
-			{
-				Color nodecolor = Color.red; // not walkable not navigable
-				if (n.walkable)
-				{
-					// if navigable
-					// green
-					// else
-					// white
-					nodecolor = Color.white;
-				}
+			//foreach (MapNode n in personalMap.nodes)
+			//{
+			//	Color nodecolor = Color.red; // not walkable not navigable
+			//	if (n.walkable)
+			//	{
+			//		// if navigable
+			//		// green
+			//		// else
+			//		// white
+			//		nodecolor = Color.white;
+			//	}
 
-				Gizmos.color = nodecolor;
+			//	Gizmos.color = nodecolor;
+			//	Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
+			//}
+
+			foreach (MapNode n in navigableNodes)
+			{
 				Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
+				Handles.Label(n.worldPosition, n.cost.ToString());
 			}
 		}
 	}

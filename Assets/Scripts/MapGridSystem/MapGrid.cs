@@ -42,8 +42,10 @@ public class MapGrid
 		return submap;
 	}
 
-	public MapNode NodeFromWorldPosition(Vector3 worldPosition)
+	public MapNode NodeFromWorldPosition(Vector3 worldPosition, Vector3 offsetPosition)
 	{
+		worldPosition -= offsetPosition;
+
 		float percentX = Mathf.Clamp01((worldPosition.x + sizeX / 2f) / sizeX);
 		float percentY = Mathf.Clamp01((worldPosition.z + sizeY / 2f) / sizeY);
 		int indexX = NodeIndex(percentX);

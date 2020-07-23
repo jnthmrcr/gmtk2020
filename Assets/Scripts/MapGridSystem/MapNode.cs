@@ -9,7 +9,7 @@ public class MapNode
 	/// <summary> stores position in the mapgrid <summary>
 	public int gridX, gridY;
 
-	public int cost = 0;
+	public int cost = 999;
 	public MapNode parent;
 	// ref to either the obstacle or pawn on this node
 

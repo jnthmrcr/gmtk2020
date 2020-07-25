@@ -10,8 +10,8 @@ public class PlayerMech : Pawn
 	{
 		//if (Input.GetKeyDown(KeyCode.Space))
 		//{
-		GetPersonalMap(transform.position, moveDist);
-		FindNavigableNodes(transform.position, moveDist);
+		//GetPersonalMap(transform.position, moveDist);
+		//FindNavigableNodes(transform.position, moveDist);
 		//}
 	}
 

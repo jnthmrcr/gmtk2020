@@ -29,8 +29,13 @@ public static class Utility
         return new Vector3(v2.x, y, v2.y);
 	}
 
-    public static Vector3Int toV3i(this Vector2Int v2, int z = 0)
+    public static Vector3 toV3(this Vector2Int v2i, float y = 0)
     {
-        return new Vector3Int(v2.x, v2.y, z);
+        return new Vector3(v2i.x, y, v2i.y);
+    }
+
+    public static Vector3Int toV3i(this Vector2Int v2, int y = 0)
+    {
+        return new Vector3Int(v2.x, y, v2.y);
     }
 }

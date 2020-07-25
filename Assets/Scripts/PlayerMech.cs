@@ -13,6 +13,8 @@ public class PlayerMech : Pawn
 		//GetPersonalMap(transform.position, moveDist);
 		//FindNavigableNodes(transform.position, moveDist);
 		//}
+
+		FindTargettableNodes(transform.position, attackDist, wind.x, wind.y);
 	}
 
 	private void OnDrawGizmos()
@@ -22,11 +24,11 @@ public class PlayerMech : Pawn
 
 		Gizmos.color = Color.cyan;
 		MapNode startNode = mainMap.grid.NodeFromWorldPosition(transform.position, Vector3.zero);
-		print(startNode.gridX + ", " + startNode.gridY);
+		//print(startNode.gridX + ", " + startNode.gridY);
 
 		Gizmos.DrawCube(startNode.worldPosition, Vector3.one);
 
-		print("startnotede " + startNode.gridX + " " + startNode.gridY);
+		//print("startnotede " + startNode.gridX + " " + startNode.gridY);
 
 
 		//Handles.Label(transform.position + Vector3.back * (mapWorldSize.y + 1), grid.nodes.Length.ToString());
@@ -49,11 +51,19 @@ public class PlayerMech : Pawn
 			//	Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
 			//}
 
-			foreach (MapNode n in navigableNodes)
-			{
-				Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
-				Handles.Label(n.worldPosition, n.cost.ToString());
-			}
+			//foreach (MapNode n in navigableNodes)
+			//{
+			//	Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
+			//	Handles.Label(n.worldPosition, n.cost.ToString());
+			//}
+
+			
+		}
+
+		// targetable point test
+		foreach (Vector2Int p in targetablePoints)
+		{
+			Gizmos.DrawCube(p.toV3(), Vector3.one * 0.8f);
 		}
 	}
 }

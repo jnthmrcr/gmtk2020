@@ -16,9 +16,12 @@ public class Pawn : MonoBehaviour
 	public MapGrid personalMap;
 
 	[SerializeField] protected int moveDist = 4;
-	protected int attackDist = 4;
+	[SerializeField] protected Vector2Int wind;
+	[SerializeField] protected int attackDist = 4;
 
 	protected List<MapNode> navigableNodes;
+	protected List<Vector2Int> targetablePoints;
+
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
 	{
@@ -36,7 +39,7 @@ public class Pawn : MonoBehaviour
 
 	}
 
-	public void FindNavigableNodes(Vector3 startPos, int distance, int windX = 0, int windY = 0)
+	public void FindNavigableNodes(Vector3 startPos, int distance)
 	{
 		MapNode startNode = personalMap.NodeFromWorldPosition(startPos, transform.position);
 		Debug.DrawLine(startNode.worldPosition, startNode.worldPosition + Vector3.up, Color.cyan);
@@ -102,5 +105,46 @@ public class Pawn : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void FindTargettableNodes(Vector3 startpos, int distance, int windX = 0, int windY = 0)
+	{
+		int x = Mathf.RoundToInt(startpos.x) + windX - distance;
+		int y = Mathf.RoundToInt(startpos.z) + windY;
+
+		targetablePoints = new List<Vector2Int>();
+
+		// get all the points
+		for (int i = 0; i <= distance; i++) // x
+		{
+			int numPoints = i * 2 + 1;
+			for (int j = 0; j < numPoints; j++) // y
+			{
+				targetablePoints.Add(new Vector2Int(x, y + j));
+				if (i != distance) // if we are not at center
+					targetablePoints.Add(new Vector2Int(x + ((distance - i) * 2), y + j)); // add second mirrored point
+			}
+			y--; // start one tile lower every tile
+			x++; // start one tile to the right
+		}
+
+		RaycastHit hit;
+		List<Vector2Int> final = new List<Vector2Int>();
+		Vector3 castPoint = transform.position;
+		castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
+		// raycast check all points
+		for (int i = 0; i < targetablePoints.Count; i++)
+		{
+			if (Physics.Linecast(castPoint, targetablePoints[i].toV3(), out hit))
+			{
+				//if (Vector3.Distance(hit.point, targetablePoints[i].toV3()) > 1)
+				if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) > 1)
+				{
+					continue;
+				}
+			}
+			final.Add(targetablePoints[i]);
+		}
+		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
 	}
 }

@@ -141,40 +141,79 @@ public class Pawn : MonoBehaviour
 		bool checkRight = !Physics.CheckSphere(pointRight, 0.1f);
 		bool checkLeft = !Physics.CheckSphere(pointLeft, 0.1f);
 
+		bool checkTopRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, 1), 0.1f);
+		bool checkTopLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, 1), 0.1f);
+		bool checkBottomRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, -1), 0.1f);
+		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f);
+
 		// raycast check all points
 		for (int i = 0; i < targetablePoints.Count; i++)
 		{
 			bool targetable = true;
-			if (Physics.Linecast(castPoint, targetablePoints[i].toV3(), out hit))
+			if (Physics.Linecast(castPoint, targetablePoints[i].toV3(), out hit)) // if hit something
 			{	
-				//if (Vector3.Distance(hit.point, targetablePoints[i].toV3()) > 1)
+				// is it 1 tile deep
 				if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
-				{
 					targetable = false;	// not close enough to count
-				}
 			}
 
-			if (!targetable) // only do this next check if node is not accessible normally
+			if (!targetable) // only do these next checks if node is not accessible normally
 			{
-				if (checkTop && !Physics.Linecast(pointTop, targetablePoints[i].toV3()))
+				if (checkTop && targetablePoints[i].y >= pointTop.z)
 				{
-					if (targetablePoints[i].y >= pointTop.z)
+					if (Physics.Linecast(pointTop, targetablePoints[i].toV3(), out hit))
+					{
+						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
+							targetable = false; // not close enough to count
+						else
+							targetable = true;
+					} else
+					{
 						targetable = true;
+					}
 				}
-				if (checkBottom && !Physics.Linecast(pointBottom, targetablePoints[i].toV3()))
+				if (checkBottom && targetablePoints[i].y <= pointBottom.z)
 				{
-					if (targetablePoints[i].y <= pointBottom.z)
+					if (Physics.Linecast(pointBottom, targetablePoints[i].toV3(), out hit))
+					{
+						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
+							targetable = false; // not close enough to count
+						else
+							targetable = true;
+					}
+					else
+					{
 						targetable = true;
+					}
+
 				}
-				if (checkRight && !Physics.Linecast(pointRight, targetablePoints[i].toV3()))
+				if (checkRight && targetablePoints[i].x >= pointRight.x)
 				{
-					if (targetablePoints[i].x >= pointRight.x)
+					if (Physics.Linecast(pointRight, targetablePoints[i].toV3(), out hit))
+					{
+						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
+							targetable = false; // not close enough to count
+						else
+							targetable = true;
+					}
+					else
+					{
 						targetable = true;
+					}
 				}
-				if (checkLeft && !Physics.Linecast(pointLeft, targetablePoints[i].toV3()))
+				if (checkLeft && targetablePoints[i].x <= pointLeft.x)
 				{
-					if (targetablePoints[i].x <= pointLeft.x)
+					if (Physics.Linecast(pointLeft, targetablePoints[i].toV3(), out hit))
+					{
+						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
+							targetable = false; // not close enough to count
+						else
+							targetable = true;
+					}
+					else
+					{
 						targetable = true;
+					}
 				}
 			}
 

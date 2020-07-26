@@ -130,18 +130,56 @@ public class Pawn : MonoBehaviour
 		List<Vector2Int> final = new List<Vector2Int>();
 		Vector3 castPoint = transform.position;
 		castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
+
+		bool checkTopRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, 1), 0.1f);
+		bool checkTopLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, 1), 0.1f);
+		bool checkBottomRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, -1), 0.1f);
+		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f);
 		// raycast check all points
 		for (int i = 0; i < targetablePoints.Count; i++)
 		{
+			castPoint = transform.position;
+			castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
+			bool targetable = true;
 			if (Physics.Linecast(castPoint, targetablePoints[i].toV3(), out hit))
-			{
+			{	
 				//if (Vector3.Distance(hit.point, targetablePoints[i].toV3()) > 1)
-				if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) > 1)
+				if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
 				{
-					continue;
+					targetable = false;	// not close enough to count
 				}
 			}
-			final.Add(targetablePoints[i]);
+
+			if (!targetable) // only do this next check if node is not accessible normally
+			{
+				castPoint = transform.position + Vector3.forward;
+				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkTopLeft && checkTopRight)
+				{
+					if (targetablePoints[i].y >= castPoint.z)
+						targetable = true;
+				}
+				castPoint = transform.position + Vector3.back;
+				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkBottomLeft && checkBottomRight)
+				{
+					if (targetablePoints[i].y <= castPoint.z)
+						targetable = true;
+				}
+				castPoint = transform.position + Vector3.right;
+				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkTopRight && checkBottomRight)
+				{
+					if (targetablePoints[i].x >= castPoint.x)
+						targetable = true;
+				}
+				castPoint = transform.position + Vector3.left;
+				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkTopLeft && checkBottomLeft)
+				{
+					if (targetablePoints[i].x <= castPoint.x)
+						targetable = true;
+				}
+			}
+
+			if (targetable)
+				final.Add(targetablePoints[i]);
 		}
 		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
 	}

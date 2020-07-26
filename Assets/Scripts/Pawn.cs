@@ -135,11 +135,20 @@ public class Pawn : MonoBehaviour
 		bool checkTopLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, 1), 0.1f);
 		bool checkBottomRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, -1), 0.1f);
 		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f);
+
+		Vector3 pointTop = castPoint + new Vector3(0, 0, 1);
+		Vector3 pointBottom = castPoint + new Vector3(0, 0, -1);
+		Vector3 pointRight = castPoint + new Vector3(1, 0, 0);
+		Vector3 pointLeft = castPoint + new Vector3(-1, 0, 0);
+
+		bool checkTop = !Physics.CheckSphere(pointTop, 0.1f);
+		bool checkBottom = !Physics.CheckSphere(pointBottom, 0.1f);
+		bool checkRight = !Physics.CheckSphere(pointRight, 0.1f);
+		bool checkLeft = !Physics.CheckSphere(pointLeft, 0.1f);
+
 		// raycast check all points
 		for (int i = 0; i < targetablePoints.Count; i++)
 		{
-			castPoint = transform.position;
-			castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
 			bool targetable = true;
 			if (Physics.Linecast(castPoint, targetablePoints[i].toV3(), out hit))
 			{	
@@ -152,28 +161,24 @@ public class Pawn : MonoBehaviour
 
 			if (!targetable) // only do this next check if node is not accessible normally
 			{
-				castPoint = transform.position + Vector3.forward;
-				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkTopLeft && checkTopRight)
+				if (checkTop && !Physics.Linecast(pointTop, targetablePoints[i].toV3()) && checkTopLeft && checkTopRight)
 				{
-					if (targetablePoints[i].y >= castPoint.z)
+					if (targetablePoints[i].y >= pointTop.z)
 						targetable = true;
 				}
-				castPoint = transform.position + Vector3.back;
-				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkBottomLeft && checkBottomRight)
+				if (checkBottom && !Physics.Linecast(pointBottom, targetablePoints[i].toV3()) && checkBottomLeft && checkBottomRight)
 				{
-					if (targetablePoints[i].y <= castPoint.z)
+					if (targetablePoints[i].y <= pointBottom.z)
 						targetable = true;
 				}
-				castPoint = transform.position + Vector3.right;
-				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkTopRight && checkBottomRight)
+				if (checkRight && !Physics.Linecast(pointRight, targetablePoints[i].toV3()) && checkTopRight && checkBottomRight)
 				{
-					if (targetablePoints[i].x >= castPoint.x)
+					if (targetablePoints[i].x >= pointRight.x)
 						targetable = true;
 				}
-				castPoint = transform.position + Vector3.left;
-				if (!Physics.CheckSphere(castPoint, 0.1f) && !Physics.Linecast(castPoint, targetablePoints[i].toV3()) && checkTopLeft && checkBottomLeft)
+				if (checkLeft && !Physics.Linecast(pointLeft, targetablePoints[i].toV3()) && checkTopLeft && checkBottomLeft)
 				{
-					if (targetablePoints[i].x <= castPoint.x)
+					if (targetablePoints[i].x <= pointLeft.x)
 						targetable = true;
 				}
 			}

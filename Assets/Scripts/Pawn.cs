@@ -161,59 +161,19 @@ public class Pawn : MonoBehaviour
 			{
 				if (checkTop && targetablePoints[i].y >= pointTop.z)
 				{
-					if (Physics.Linecast(pointTop, targetablePoints[i].toV3(), out hit))
-					{
-						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
-							targetable = false; // not close enough to count
-						else
-							targetable = true;
-					} else
-					{
-						targetable = true;
-					}
+					targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
 				}
 				if (checkBottom && targetablePoints[i].y <= pointBottom.z)
 				{
-					if (Physics.Linecast(pointBottom, targetablePoints[i].toV3(), out hit))
-					{
-						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
-							targetable = false; // not close enough to count
-						else
-							targetable = true;
-					}
-					else
-					{
-						targetable = true;
-					}
-
+					targetable = CornerLineCast(pointBottom, targetablePoints[i].toV3());
 				}
 				if (checkRight && targetablePoints[i].x >= pointRight.x)
 				{
-					if (Physics.Linecast(pointRight, targetablePoints[i].toV3(), out hit))
-					{
-						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
-							targetable = false; // not close enough to count
-						else
-							targetable = true;
-					}
-					else
-					{
-						targetable = true;
-					}
+					targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
 				}
 				if (checkLeft && targetablePoints[i].x <= pointLeft.x)
 				{
-					if (Physics.Linecast(pointLeft, targetablePoints[i].toV3(), out hit))
-					{
-						if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
-							targetable = false; // not close enough to count
-						else
-							targetable = true;
-					}
-					else
-					{
-						targetable = true;
-					}
+					targetable = CornerLineCast(pointLeft, targetablePoints[i].toV3());
 				}
 			}
 
@@ -221,5 +181,20 @@ public class Pawn : MonoBehaviour
 				final.Add(targetablePoints[i]);
 		}
 		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
+
+		bool CornerLineCast(Vector3 point, Vector3 target)
+		{
+			if (Physics.Linecast(point, target, out hit))
+			{
+				if (Vector3.SqrMagnitude(hit.point - target) >= 0.55f) // slightly more than srt2 dist
+					return false; // not close enough to count
+				else
+					return true;
+			}
+			else
+			{
+				return true;
+			}
+		}
 	}
 }

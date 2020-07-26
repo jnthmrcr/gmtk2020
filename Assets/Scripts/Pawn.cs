@@ -131,11 +131,6 @@ public class Pawn : MonoBehaviour
 		Vector3 castPoint = transform.position;
 		castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
 
-		bool checkTopRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, 1), 0.1f);
-		bool checkTopLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, 1), 0.1f);
-		bool checkBottomRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, -1), 0.1f);
-		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f);
-
 		Vector3 pointTop = castPoint + new Vector3(0, 0, 1);
 		Vector3 pointBottom = castPoint + new Vector3(0, 0, -1);
 		Vector3 pointRight = castPoint + new Vector3(1, 0, 0);
@@ -161,22 +156,22 @@ public class Pawn : MonoBehaviour
 
 			if (!targetable) // only do this next check if node is not accessible normally
 			{
-				if (checkTop && !Physics.Linecast(pointTop, targetablePoints[i].toV3()) && checkTopLeft && checkTopRight)
+				if (checkTop && !Physics.Linecast(pointTop, targetablePoints[i].toV3()))
 				{
 					if (targetablePoints[i].y >= pointTop.z)
 						targetable = true;
 				}
-				if (checkBottom && !Physics.Linecast(pointBottom, targetablePoints[i].toV3()) && checkBottomLeft && checkBottomRight)
+				if (checkBottom && !Physics.Linecast(pointBottom, targetablePoints[i].toV3()))
 				{
 					if (targetablePoints[i].y <= pointBottom.z)
 						targetable = true;
 				}
-				if (checkRight && !Physics.Linecast(pointRight, targetablePoints[i].toV3()) && checkTopRight && checkBottomRight)
+				if (checkRight && !Physics.Linecast(pointRight, targetablePoints[i].toV3()))
 				{
 					if (targetablePoints[i].x >= pointRight.x)
 						targetable = true;
 				}
-				if (checkLeft && !Physics.Linecast(pointLeft, targetablePoints[i].toV3()) && checkTopLeft && checkBottomLeft)
+				if (checkLeft && !Physics.Linecast(pointLeft, targetablePoints[i].toV3()))
 				{
 					if (targetablePoints[i].x <= pointLeft.x)
 						targetable = true;

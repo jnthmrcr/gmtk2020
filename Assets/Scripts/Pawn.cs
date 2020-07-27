@@ -162,25 +162,25 @@ public class Pawn : MonoBehaviour
 			{
 				if (checkTop && targetablePoints[i].y >= pointTop.z)
 				{
-					targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
+					targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
 					if (checkTopLeft && targetablePoints[i].x < pointTop.x)
 					{
-						targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
 					}
 					else if (checkTopRight && targetablePoints[i].x > pointTop.x)
 					{
-						targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
 					}
 				}
 				if (checkBottom && targetablePoints[i].y <= pointBottom.z)
 				{
 					if (checkBottomLeft && targetablePoints[i].x < pointBottom.x)
 					{
-						targetable = CornerLineCast(pointBottom, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3());
 					}
 					else if (checkBottomRight && targetablePoints[i].x > pointBottom.x)
 					{
-						targetable = CornerLineCast(pointBottom, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3());
 					}
 				}
 				if (checkRight && targetablePoints[i].x >= pointRight.x)
@@ -189,22 +189,22 @@ public class Pawn : MonoBehaviour
 					//trying to get it to not select a thing if we're resting on a corner/ fuck.
 					if (checkTopRight && targetablePoints[i].y > pointRight.z)
 					{
-						targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointRight, targetablePoints[i].toV3());
 					}
 					else if (checkBottomRight && targetablePoints[i].y < pointRight.z)
 					{
-						targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointRight, targetablePoints[i].toV3());
 					}
 				}
 				if (checkLeft && targetablePoints[i].x <= pointLeft.x)
 				{
 					if (checkTopLeft && targetablePoints[i].y > pointLeft.z)
 					{
-						targetable = CornerLineCast(pointLeft, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3());
 					}
 					else if (checkBottomLeft && targetablePoints[i].y < pointLeft.z)
 					{
-						targetable = CornerLineCast(pointLeft, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3());
 					}
 				}
 			}
@@ -214,7 +214,7 @@ public class Pawn : MonoBehaviour
 		}
 		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
 
-		bool CornerLineCast(Vector3 point, Vector3 target)
+		bool LineCastTest(Vector3 point, Vector3 target)
 		{
 			if (Physics.Linecast(point, target, out hit))
 			{

@@ -136,6 +136,7 @@ public class Pawn : MonoBehaviour
 		Vector3 pointRight = castPoint + new Vector3(1, 0, 0);
 		Vector3 pointLeft = castPoint + new Vector3(-1, 0, 0);
 
+		// true if clear
 		bool checkTop = !Physics.CheckSphere(pointTop, 0.1f);
 		bool checkBottom = !Physics.CheckSphere(pointBottom, 0.1f);
 		bool checkRight = !Physics.CheckSphere(pointRight, 0.1f);
@@ -162,18 +163,49 @@ public class Pawn : MonoBehaviour
 				if (checkTop && targetablePoints[i].y >= pointTop.z)
 				{
 					targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
+					if (checkTopLeft && targetablePoints[i].x < pointTop.x)
+					{
+						targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
+					}
+					else if (checkTopRight && targetablePoints[i].x > pointTop.x)
+					{
+						targetable = CornerLineCast(pointTop, targetablePoints[i].toV3());
+					}
 				}
 				if (checkBottom && targetablePoints[i].y <= pointBottom.z)
 				{
-					targetable = CornerLineCast(pointBottom, targetablePoints[i].toV3());
+					if (checkBottomLeft && targetablePoints[i].x < pointBottom.x)
+					{
+						targetable = CornerLineCast(pointBottom, targetablePoints[i].toV3());
+					}
+					else if (checkBottomRight && targetablePoints[i].x > pointBottom.x)
+					{
+						targetable = CornerLineCast(pointBottom, targetablePoints[i].toV3());
+					}
 				}
 				if (checkRight && targetablePoints[i].x >= pointRight.x)
 				{
-					targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
+					//targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
+					//trying to get it to not select a thing if we're resting on a corner/ fuck.
+					if (checkTopRight && targetablePoints[i].y > pointRight.z)
+					{
+						targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
+					}
+					else if (checkBottomRight && targetablePoints[i].y < pointRight.z)
+					{
+						targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
+					}
 				}
 				if (checkLeft && targetablePoints[i].x <= pointLeft.x)
 				{
-					targetable = CornerLineCast(pointLeft, targetablePoints[i].toV3());
+					if (checkTopLeft && targetablePoints[i].y > pointLeft.z)
+					{
+						targetable = CornerLineCast(pointLeft, targetablePoints[i].toV3());
+					}
+					else if (checkBottomLeft && targetablePoints[i].y < pointLeft.z)
+					{
+						targetable = CornerLineCast(pointLeft, targetablePoints[i].toV3());
+					}
 				}
 			}
 

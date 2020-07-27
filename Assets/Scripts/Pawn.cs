@@ -150,13 +150,7 @@ public class Pawn : MonoBehaviour
 		// raycast check all points
 		for (int i = 0; i < targetablePoints.Count; i++)
 		{
-			bool targetable = true;
-			if (Physics.Linecast(castPoint, targetablePoints[i].toV3(), out hit)) // if hit something
-			{	
-				// is it 1 tile deep
-				if (Vector3.SqrMagnitude(hit.point - targetablePoints[i].toV3()) >= 0.55f) // slightly more than srt2 dist
-					targetable = false;	// not close enough to count
-			}
+			bool targetable = LineCastTest(castPoint, targetablePoints[i].toV3());
 
 			if (!targetable) // only do these next checks if node is not accessible normally
 			{

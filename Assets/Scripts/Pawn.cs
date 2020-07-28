@@ -154,49 +154,49 @@ public class Pawn : MonoBehaviour
 
 			if (!targetable) // only do these next checks if node is not accessible normally
 			{
-				if (checkTop && targetablePoints[i].y >= pointTop.z)
+				if (checkTop && targetablePoints[i].y > castPoint.z)
 				{
 					targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
-					if (checkTopLeft && targetablePoints[i].x < pointTop.x)
+					if (checkTopLeft && targetablePoints[i].x < castPoint.x)
 					{
 						targetable = LineCastTest(pointTop, targetablePoints[i].toV3(), true);
 					}
-					else if (checkTopRight && targetablePoints[i].x > pointTop.x)
+					else if (checkTopRight && targetablePoints[i].x > castPoint.x)
 					{
 						targetable = LineCastTest(pointTop, targetablePoints[i].toV3(), true);
 					}
 				}
-				if (checkBottom && targetablePoints[i].y <= pointBottom.z)
+				if (checkBottom && targetablePoints[i].y < castPoint.z)
 				{
-					if (checkBottomLeft && targetablePoints[i].x < pointBottom.x)
+					if (checkBottomLeft && targetablePoints[i].x < castPoint.x)
 					{
 						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3(), true);
 					}
-					else if (checkBottomRight && targetablePoints[i].x > pointBottom.x)
+					else if (checkBottomRight && targetablePoints[i].x > castPoint.x)
 					{
 						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3(), true);
 					}
 				}
-				if (checkRight && targetablePoints[i].x >= pointRight.x)
+				if (checkRight && targetablePoints[i].x > castPoint.x)
 				{
 					//targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
 					//trying to get it to not select a thing if we're resting on a corner/ fuck.
-					if (checkTopRight && targetablePoints[i].y > pointRight.z)
+					if (checkTopRight && targetablePoints[i].y > castPoint.z)
 					{
 						targetable = LineCastTest(pointRight, targetablePoints[i].toV3(), true);
 					}
-					else if (checkBottomRight && targetablePoints[i].y < pointRight.z)
+					else if (checkBottomRight && targetablePoints[i].y < castPoint.z)
 					{
 						targetable = LineCastTest(pointRight, targetablePoints[i].toV3(), true);
 					}
 				}
-				if (checkLeft && targetablePoints[i].x <= pointLeft.x)
+				if (checkLeft && targetablePoints[i].x < castPoint.x)
 				{
-					if (checkTopLeft && targetablePoints[i].y > pointLeft.z)
+					if (checkTopLeft && targetablePoints[i].y > castPoint.z)
 					{
 						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3(), true);
 					}
-					else if (checkBottomLeft && targetablePoints[i].y < pointLeft.z)
+					else if (checkBottomLeft && targetablePoints[i].y < castPoint.z)
 					{
 						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3(), true);
 					}

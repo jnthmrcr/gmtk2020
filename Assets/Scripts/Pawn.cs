@@ -150,82 +150,89 @@ public class Pawn : MonoBehaviour
 		// raycast check all points
 		for (int i = 0; i < targetablePoints.Count; i++)
 		{
-			bool targetable = LineCastTest(castPoint, targetablePoints[i].toV3());
+			Vector2Int targetablePoint = targetablePoints[i];
 
-			if (!targetable) // only do these next checks if node is not accessible normally
+			if (!LineCastTest(castPoint, targetablePoint)) // only do these next checks if node is not accessible normally
 			{
 				if (checkTop && targetablePoints[i].y > castPoint.z)
 				{
-					targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
-					if (checkTopLeft && targetablePoints[i].x < castPoint.x)
+					if (checkTopLeft && targetablePoint.x < castPoint.x)
 					{
-						targetable = LineCastTest(pointTop, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointTop, targetablePoint, true))
+							continue;
 					}
 					else if (checkTopRight && targetablePoints[i].x > castPoint.x)
 					{
-						targetable = LineCastTest(pointTop, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointTop, targetablePoint, true))
+							continue;
 					}
 				}
-				if (checkBottom && targetablePoints[i].y < castPoint.z)
+				if (checkBottom && targetablePoint.y < castPoint.z)
 				{
-					if (checkBottomLeft && targetablePoints[i].x < castPoint.x)
+					if (checkBottomLeft && targetablePoint.x < castPoint.x)
 					{
-						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointBottom, targetablePoint, true))
+							continue;
 					}
 					else if (checkBottomRight && targetablePoints[i].x > castPoint.x)
 					{
-						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointBottom, targetablePoint, true))
+							continue;
 					}
 				}
-				if (checkRight && targetablePoints[i].x > castPoint.x)
+				if (checkRight && targetablePoint.x > castPoint.x)
 				{
 					//targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
 					//trying to get it to not select a thing if we're resting on a corner/ fuck.
-					if (checkTopRight && targetablePoints[i].y > castPoint.z)
+					if (checkTopRight && targetablePoint.y > castPoint.z)
 					{
-						targetable = LineCastTest(pointRight, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointRight, targetablePoint, true))
+							continue;
 					}
-					else if (checkBottomRight && targetablePoints[i].y < castPoint.z)
+					else if (checkBottomRight && targetablePoint.y < castPoint.z)
 					{
-						targetable = LineCastTest(pointRight, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointRight, targetablePoint, true))
+							continue;
 					}
 				}
-				if (checkLeft && targetablePoints[i].x < castPoint.x)
+				if (checkLeft && targetablePoint.x < castPoint.x)
 				{
-					if (checkTopLeft && targetablePoints[i].y > castPoint.z)
+					if (checkTopLeft && targetablePoint.y > castPoint.z)
 					{
-						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointLeft, targetablePoint, true))
+							continue;
 					}
-					else if (checkBottomLeft && targetablePoints[i].y < castPoint.z)
+					else if (checkBottomLeft && targetablePoint.y < castPoint.z)
 					{
-						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3(), true);
+						if (LineCastTest(pointLeft, targetablePoint, true))
+							continue;
 					}
 				}
 			}
-
-			if (targetable)
-				final.Add(targetablePoints[i]);
 		}
 		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
 
-		bool LineCastTest(Vector3 point, Vector3 target, bool debug = false)
+		bool LineCastTest(Vector3 point, Vector2Int target, bool debug = false)
 		{
-			if (Physics.Linecast(point, target, out hit))
+			Vector3 target3 = target.toV3();
+
+			if (Physics.Linecast(point, target3, out hit))
 			{
-				if (Vector3.SqrMagnitude(hit.point - target) >= 0.55f) // slightly more than srt2 dist
+				if (Vector3.SqrMagnitude(hit.point - target3) >= 0.55f) // slightly more than srt2 dist
 					return false; // not close enough to count
 				else
 				{
 					if (debug)
-						Debug.DrawLine(point, target);
+						Debug.DrawLine(point, target3);
+					final.Add(target);
 					return true;
-
 				}
 			}
 			else
 			{
 				if (debug)
-					Debug.DrawLine(point, target);
+					Debug.DrawLine(point, target3);
+				final.Add(target);
 				return true;
 			}
 		}

@@ -159,22 +159,22 @@ public class Pawn : MonoBehaviour
 					targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
 					if (checkTopLeft && targetablePoints[i].x < pointTop.x)
 					{
-						targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointTop, targetablePoints[i].toV3(), true);
 					}
 					else if (checkTopRight && targetablePoints[i].x > pointTop.x)
 					{
-						targetable = LineCastTest(pointTop, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointTop, targetablePoints[i].toV3(), true);
 					}
 				}
 				if (checkBottom && targetablePoints[i].y <= pointBottom.z)
 				{
 					if (checkBottomLeft && targetablePoints[i].x < pointBottom.x)
 					{
-						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3(), true);
 					}
 					else if (checkBottomRight && targetablePoints[i].x > pointBottom.x)
 					{
-						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointBottom, targetablePoints[i].toV3(), true);
 					}
 				}
 				if (checkRight && targetablePoints[i].x >= pointRight.x)
@@ -183,22 +183,22 @@ public class Pawn : MonoBehaviour
 					//trying to get it to not select a thing if we're resting on a corner/ fuck.
 					if (checkTopRight && targetablePoints[i].y > pointRight.z)
 					{
-						targetable = LineCastTest(pointRight, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointRight, targetablePoints[i].toV3(), true);
 					}
 					else if (checkBottomRight && targetablePoints[i].y < pointRight.z)
 					{
-						targetable = LineCastTest(pointRight, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointRight, targetablePoints[i].toV3(), true);
 					}
 				}
 				if (checkLeft && targetablePoints[i].x <= pointLeft.x)
 				{
 					if (checkTopLeft && targetablePoints[i].y > pointLeft.z)
 					{
-						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3(), true);
 					}
 					else if (checkBottomLeft && targetablePoints[i].y < pointLeft.z)
 					{
-						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3());
+						targetable = LineCastTest(pointLeft, targetablePoints[i].toV3(), true);
 					}
 				}
 			}
@@ -208,17 +208,24 @@ public class Pawn : MonoBehaviour
 		}
 		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
 
-		bool LineCastTest(Vector3 point, Vector3 target)
+		bool LineCastTest(Vector3 point, Vector3 target, bool debug = false)
 		{
 			if (Physics.Linecast(point, target, out hit))
 			{
 				if (Vector3.SqrMagnitude(hit.point - target) >= 0.55f) // slightly more than srt2 dist
 					return false; // not close enough to count
 				else
+				{
+					if (debug)
+						Debug.DrawLine(point, target);
 					return true;
+
+				}
 			}
 			else
 			{
+				if (debug)
+					Debug.DrawLine(point, target);
 				return true;
 			}
 		}

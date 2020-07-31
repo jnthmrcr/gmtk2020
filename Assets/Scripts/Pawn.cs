@@ -17,8 +17,8 @@ public class Pawn : MonoBehaviour
 	[SerializeField] protected Vector2Int wind;
 	[SerializeField] protected int attackDist = 4;
 
-	protected List<MapNode> navigableNodes;
-	protected List<Vector2Int> targetablePoints;
+	public List<MapNode> navigableNodes;
+	public List<Vector2Int> targetablePoints;
 
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
@@ -128,7 +128,7 @@ public class Pawn : MonoBehaviour
 
 		RaycastHit hit;
 		List<Vector2Int> final = new List<Vector2Int>();
-		Vector3 castPoint = transform.position;
+		Vector3 castPoint = startpos;
 		castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
 
 		Vector3 pointTop = castPoint + new Vector3(0, 0, 1);
@@ -236,5 +236,12 @@ public class Pawn : MonoBehaviour
 				return true;
 			}
 		}
+	}
+
+	public virtual void PhaseInit(int windX, int windY)
+	{
+		GetPersonalMap(transform.position, moveDist);
+		FindNavigableNodes(transform.position, moveDist);
+		FindTargettableNodes(transform.position, attackDist, windX, windY);
 	}
 }

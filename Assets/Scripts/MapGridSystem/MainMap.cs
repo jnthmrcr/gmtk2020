@@ -11,7 +11,7 @@ public class MainMap : MonoBehaviour
     public MapGrid grid;
     public Vector2Int mapWorldSize;
 
-	private void Start()
+	private void Awake()
 	{
 		CreateMainMap();
 	}

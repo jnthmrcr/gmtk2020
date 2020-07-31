@@ -6,6 +6,8 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerMech : Pawn
 {
+	[SerializeField] GameObject indicatorprefab;
+
 	private void Update()
 	{
 		//if (Input.GetKeyDown(KeyCode.Space))
@@ -14,7 +16,7 @@ public class PlayerMech : Pawn
 		//FindNavigableNodes(transform.position, moveDist);
 		//}
 
-		FindTargettableNodes(transform.position, attackDist, wind.x, wind.y);
+		//FindTargettableNodes(transform.position, attackDist, wind.x, wind.y);
 	}
 
 	private void OnDrawGizmos()
@@ -64,6 +66,21 @@ public class PlayerMech : Pawn
 		foreach (Vector2Int p in targetablePoints)
 		{
 			Gizmos.DrawCube(p.toV3(), Vector3.one * 0.8f);
+		}
+	}
+
+	public override void PhaseInit(int windX, int windY)
+	{
+		base.PhaseInit(windX, windY);
+
+		Color bc = indicatorprefab.GetComponent<MeshRenderer>().sharedMaterial.GetColor("_BaseColor");
+		foreach (MapNode n in navigableNodes)
+		{
+			GameObject go = Instantiate(indicatorprefab, n.worldPosition, Quaternion.Euler(90f, 45f, 0f), transform);
+			MeshRenderer mr = go.GetComponent<MeshRenderer>();
+			float ratio = (float)n.cost / (float)moveDist;
+			mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
+			go.transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
 		}
 	}
 }

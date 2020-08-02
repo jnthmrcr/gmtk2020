@@ -593,4 +593,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 1024
+  friendlyMask:
+    serializedVersion: 2
+    m_Bits: 2048
   curorLerpSpeed: 30

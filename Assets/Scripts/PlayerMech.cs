@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -7,6 +9,22 @@ using UnityEngine.Rendering.Universal;
 public class PlayerMech : Pawn
 {
 	[SerializeField] GameObject indicatorprefab;
+	[SerializeField] TextMeshPro mechName;
+
+	GameObject[] targetIndicatorCache;
+
+
+	protected override void Start()
+	{
+		base.Start();
+
+		targetIndicatorCache = new GameObject[41];
+		for (int i = 0; i < targetIndicatorCache.Length; i++)
+		{
+			targetIndicatorCache[i] = Instantiate(indicatorprefab, Vector3.zero, Quaternion.Euler(90f, 45f, 0f), transform);
+			targetIndicatorCache[i].SetActive(false);
+		}
+	}
 
 	private void Update()
 	{
@@ -73,14 +91,34 @@ public class PlayerMech : Pawn
 	{
 		base.PhaseInit(windX, windY);
 
+		mechName.text = "hubert";
+		hp.text = (7).ToString();
+	}
+
+	public void SetActiveMech()
+	{
 		Color bc = indicatorprefab.GetComponent<MeshRenderer>().sharedMaterial.GetColor("_BaseColor");
-		foreach (MapNode n in navigableNodes)
+		MeshRenderer mr;
+		float ratio;
+
+		int exitindex =	navigableNodes.Count;
+		for (int i = 0; i < targetIndicatorCache.Length; i++)
 		{
-			GameObject go = Instantiate(indicatorprefab, n.worldPosition, Quaternion.Euler(90f, 45f, 0f), transform);
-			MeshRenderer mr = go.GetComponent<MeshRenderer>();
-			float ratio = (float)n.cost / (float)moveDist;
-			mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
-			go.transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
+			if (i < exitindex)
+			{ // do stuff
+				targetIndicatorCache[i].transform.position = navigableNodes[i].worldPosition + Vector3.up * 1.4f;
+				targetIndicatorCache[i].SetActive(true);
+
+				mr = targetIndicatorCache[i].GetComponent<MeshRenderer>();
+				ratio = (float) navigableNodes[i].cost / (float) moveDist;
+
+				mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
+				targetIndicatorCache[i].transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
+			}
+			else
+			{ // do not do thing
+				targetIndicatorCache[i].SetActive(false);
+			}
 		}
 	}
 }

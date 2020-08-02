@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class PlayerCursor : MonoBehaviour
 {
@@ -8,10 +9,18 @@ public class PlayerCursor : MonoBehaviour
 	[SerializeField] GameObject enemyRangeIndicator;
 	[SerializeField] GameObject playerTargettingPrefab;
 	[SerializeField] LayerMask enemyMask;
+	[SerializeField] LayerMask friendlyMask;
 	[SerializeField] float curorLerpSpeed = 20f;
 	Vector3 goalPoint;
 
 	GameObject[] targetIndicatorCache;
+
+	GameManager gm;
+
+	private void Awake()
+	{
+		gm = GetComponentInParent<GameManager>();
+	}
 
 	private void Start()
 	{
@@ -50,6 +59,20 @@ public class PlayerCursor : MonoBehaviour
 		if (Input.GetMouseButtonUp(2))
 		{
 			ClearTargetting();
+		}
+
+		if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
+		{
+			// time to select something
+			// find nearest player
+			if (Input.GetMouseButtonDown(1))
+			{
+				Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask);
+				if (colliders.Length > 0)
+				{
+					colliders[0].GetComponent<PlayerMech>().SetActiveMech();
+				}
+			}
 		}
 	}
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Pawn : MonoBehaviour
 {
@@ -20,6 +21,20 @@ public class Pawn : MonoBehaviour
 	public List<MapNode> navigableNodes;
 	public List<Vector2Int> targetablePoints;
 
+	private int _hitPoints;
+	[SerializeField] protected TextMeshPro hp;
+
+	protected int HitPoints { get { return _hitPoints; }
+		set { _hitPoints = value;
+			if (hp != null)
+				hp.text = _hitPoints.ToString();
+		}
+	}
+
+	protected virtual void Start()
+	{
+		HitPoints = 1;
+	}
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
 	{

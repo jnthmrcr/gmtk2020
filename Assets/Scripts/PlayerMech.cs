@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerMech : Pawn
 {
+	public PlayerController player;
 	[SerializeField] GameObject indicatorprefab;
 	[SerializeField] TextMeshPro mechName;
 
@@ -97,6 +98,9 @@ public class PlayerMech : Pawn
 
 	public void SetActiveMech()
 	{
+		// THERE CAN ONLY BE ONE
+		player.SetActiveMech(this);
+
 		Color bc = indicatorprefab.GetComponent<MeshRenderer>().sharedMaterial.GetColor("_BaseColor");
 		MeshRenderer mr;
 		float ratio;
@@ -119,6 +123,14 @@ public class PlayerMech : Pawn
 			{ // do not do thing
 				targetIndicatorCache[i].SetActive(false);
 			}
+		}
+	}
+
+	public void DeselectMech()
+	{
+		foreach (GameObject t in targetIndicatorCache)
+		{
+			t.SetActive(false);
 		}
 	}
 }

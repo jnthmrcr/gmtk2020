@@ -6,13 +6,20 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerCursor myCursor;
     [SerializeField] List<PlayerMech> myMechs;
+    public PlayerMech activeMech;
+
+    [SerializeField] AnimationCurve indicatorwave1;
+    [SerializeField] AnimationCurve indicatorwave2;
 
     bool phaseActive;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        foreach (PlayerMech mech in myMechs)
+		{
+            mech.player = this;
+		}
     }
 
     // Update is called once per frame
@@ -38,4 +45,13 @@ public class PlayerController : MonoBehaviour
             myCursor.ShowCursor(false);
         }
     }
+
+    public void SetActiveMech(PlayerMech newMech)
+	{
+        if (activeMech != null)
+		{
+            activeMech.DeselectMech();
+		}
+        activeMech = newMech;
+	}
 }

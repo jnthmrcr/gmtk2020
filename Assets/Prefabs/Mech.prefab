@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 706235371857939772}
   - component: {fileID: 706235371857939773}
   - component: {fileID: 706235371857939774}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 706235372091533829}
   - component: {fileID: 706235372091533830}
   - component: {fileID: 706235372091533831}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 706235373114515344}
   - component: {fileID: 706235373114515374}
   - component: {fileID: 706235373114515375}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 4740999108837008360}
   - component: {fileID: 4740999108837008357}
   - component: {fileID: 4740999108837008356}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Mech
   m_TagString: Untagged
   m_Icon: {fileID: 0}

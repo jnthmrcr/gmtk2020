@@ -11,6 +11,9 @@ public class PlayerCursor : MonoBehaviour
 	[SerializeField] LayerMask enemyMask;
 	[SerializeField] LayerMask friendlyMask;
 	[SerializeField] float curorLerpSpeed = 20f;
+	[SerializeField] GameObject largeDiamondCursor;
+	[SerializeField] GameObject smallDiamondCursor;
+
 	Vector3 goalPoint;
 
 	GameObject[] targetIndicatorCache;
@@ -33,6 +36,7 @@ public class PlayerCursor : MonoBehaviour
 			targetIndicatorCache[i] = Instantiate(playerTargettingPrefab, Vector3.zero, Quaternion.Euler(90f, 0f, 0f), transform);
 			targetIndicatorCache[i].SetActive(false);
 		}
+
 	}
 
 	private void Update()
@@ -40,16 +44,21 @@ public class PlayerCursor : MonoBehaviour
 		Vector2 mouse = Input.mousePosition;
 		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(mouse.x, mouse.y, Camera.main.transform.position.y));
 		goalPoint = new Vector3(Mathf.Round(worldPoint.x), 0, Mathf.Round(worldPoint.z));
-		transform.position = Vector3.Lerp(transform.position, goalPoint, Time.deltaTime * curorLerpSpeed);
+		float goalY = 0;
 
 		if (Physics.CheckSphere(goalPoint, 0.1f, enemyMask))
 		{
 			enemyRangeIndicator.SetActive(true);
 			enemyRangeIndicator.transform.position = goalPoint;
+
+			SetLargeCursor(true);
+			goalY = 1f;
 		}
 		else
 		{
 			//enemyRangeIndicator.SetActive(false);
+			SetLargeCursor(false);
+
 		}
 
 		if (Input.GetMouseButton(2))
@@ -71,9 +80,13 @@ public class PlayerCursor : MonoBehaviour
 				if (colliders.Length > 0)
 				{
 					colliders[0].GetComponent<PlayerMech>().SetActiveMech();
+					goalY = 1f;
 				}
 			}
 		}
+
+		transform.position = Vector3.Lerp(transform.position, goalPoint + goalY * Vector3.up, Time.deltaTime * curorLerpSpeed);
+
 	}
 
 	private void OnApplicationFocus(bool focus)
@@ -92,6 +105,12 @@ public class PlayerCursor : MonoBehaviour
 			enemyRangeIndicator.SetActive(false);
 			gameObject.SetActive(false);
 		}
+	}
+
+	void SetLargeCursor(bool isLarge)
+	{
+		largeDiamondCursor.SetActive(isLarge);
+		smallDiamondCursor.SetActive(!isLarge);
 	}
 
 	void DrawTargetting()

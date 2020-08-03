@@ -46,19 +46,26 @@ public class PlayerCursor : MonoBehaviour
 		goalPoint = new Vector3(Mathf.Round(worldPoint.x), 0, Mathf.Round(worldPoint.z));
 		float goalY = 0;
 
-		if (Physics.CheckSphere(goalPoint, 0.1f, enemyMask))
+		Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask | enemyMask);
+		if (colliders.Length > 0)
 		{
-			enemyRangeIndicator.SetActive(true);
-			enemyRangeIndicator.transform.position = goalPoint;
-
 			SetLargeCursor(true);
 			goalY = 1f;
+			if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
+			{
+				if (Input.GetMouseButtonDown(1))
+					if (1 << colliders[0].gameObject.layer == friendlyMask)
+						colliders[0].GetComponent<PlayerMech>().SetActiveMech();
+			}
+			else
+			{ // then i guess we hit an enemy?
+				enemyRangeIndicator.SetActive(true);
+				enemyRangeIndicator.transform.position = goalPoint;
+			}
 		}
 		else
 		{
-			//enemyRangeIndicator.SetActive(false);
 			SetLargeCursor(false);
-
 		}
 
 		if (Input.GetMouseButton(2))
@@ -70,23 +77,8 @@ public class PlayerCursor : MonoBehaviour
 			ClearTargetting();
 		}
 
-		if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
-		{
-			// time to select something
-			// find nearest player
-			if (Input.GetMouseButtonDown(1))
-			{
-				Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask);
-				if (colliders.Length > 0)
-				{
-					colliders[0].GetComponent<PlayerMech>().SetActiveMech();
-					goalY = 1f;
-				}
-			}
-		}
-
+		// now we set cursor position
 		transform.position = Vector3.Lerp(transform.position, goalPoint + goalY * Vector3.up, Time.deltaTime * curorLerpSpeed);
-
 	}
 
 	private void OnApplicationFocus(bool focus)
@@ -124,7 +116,8 @@ public class PlayerCursor : MonoBehaviour
 			{
 				targetIndicatorCache[i].transform.position = player.targetablePoints[i].toV3() + Vector3.up * 1.4f;
 				targetIndicatorCache[i].SetActive(true);
-			} else
+			}
+			else
 			{
 				targetIndicatorCache[i].SetActive(false);
 			}

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class Pawn : MonoBehaviour
 {
@@ -24,8 +24,12 @@ public class Pawn : MonoBehaviour
 	private int _hitPoints;
 	[SerializeField] protected TextMeshPro hp;
 
-	protected int HitPoints { get { return _hitPoints; }
-		set { _hitPoints = value;
+	protected int HitPoints
+	{
+		get { return _hitPoints; }
+		set
+		{
+			_hitPoints = value;
 			if (hp != null)
 				hp.text = _hitPoints.ToString();
 		}
@@ -47,7 +51,7 @@ public class Pawn : MonoBehaviour
 			mainMap.grid);
 	}
 
-	public void Move(Vector2 newPosition)
+	public void Move(Vector3 worldPosition)
 	{
 
 	}
@@ -103,7 +107,7 @@ public class Pawn : MonoBehaviour
 
 		MapNode neighbor = personalMap.nodes[x, y];
 
-		if (x >= 0 && x < personalMap.sizeX && y >= 0 && y < personalMap.sizeY)// is it actually in the grid
+		if (x >= 0 && x < personalMap.sizeX && y >= 0 && y < personalMap.sizeY) // is it actually in the grid
 		{
 			if (neighbor.walkable) // is it walkable
 			{
@@ -225,7 +229,7 @@ public class Pawn : MonoBehaviour
 				}
 			}
 		}
-		targetablePoints = final;// it shouldn't need to be cleared since we're overriding it ????
+		targetablePoints = final; // it shouldn't need to be cleared since we're overriding it ????
 
 		bool LineCastTest(Vector3 point, Vector2Int target, bool debug = false)
 		{

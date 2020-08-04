@@ -5,7 +5,6 @@ using UnityEngine.Animations;
 
 public class PlayerCursor : MonoBehaviour
 {
-	[SerializeField] PlayerMech player;
 	[SerializeField] GameObject enemyRangeIndicator;
 	[SerializeField] GameObject playerTargettingPrefab;
 	[SerializeField] LayerMask enemyMask;
@@ -20,10 +19,12 @@ public class PlayerCursor : MonoBehaviour
 	GameObject[] targetIndicatorCache;
 
 	GameManager gm;
+	PlayerController playerController;
 
 	private void Awake()
 	{
 		gm = GetComponentInParent<GameManager>();
+		playerController = GetComponentInParent<PlayerController>();
 	}
 
 	private void Start()
@@ -54,20 +55,25 @@ public class PlayerCursor : MonoBehaviour
 			goalY = 1f;
 			if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
 			{
-				if (1 << colliders[0].gameObject.layer == friendlyMask)
-				{
-					if (Input.GetMouseButtonDown(1))
+				if (Input.GetMouseButtonDown(1))
+				{ // rmb, selects mech pawns during player turn
+					if (1 << colliders[0].gameObject.layer == friendlyMask)
 						colliders[0].GetComponent<PlayerMech>().SetActiveMech();
 				}
-				else if (1 << colliders[0].gameObject.layer == indicatorMask)
-				{
-					// we're touching an indicator
+				else if (Input.GetMouseButtonDown(0))
+				{ // lmb, selects indicator/confirms action
+					if (1 << colliders[0].gameObject.layer == indicatorMask)
+					{
+						playerController.activeMech.Move(goalPoint);
+					}
 				}
 				else
-				{
-					// then i guess we hit an enemy?
-					enemyRangeIndicator.SetActive(true);
-					enemyRangeIndicator.transform.position = goalPoint;
+				{ // if we're doing nothing
+					if (1 << colliders[0].gameObject.layer == enemyMask)
+					{ // and we're over an enemy
+						enemyRangeIndicator.SetActive(true);
+						enemyRangeIndicator.transform.position = goalPoint;
+					}
 				}
 			}
 			else { }
@@ -116,14 +122,15 @@ public class PlayerCursor : MonoBehaviour
 
 	void DrawTargetting()
 	{
-		player.FindTargettableNodes(transform.position, 4);
+		//todo: this method should be more easily accessed somehow
+		playerController.activeMech.FindTargettableNodes(transform.position, 4);
 
-		int exitindex = player.targetablePoints.Count;
+		int exitindex = playerController.activeMech.targetablePoints.Count;
 		for (int i = 0; i < targetIndicatorCache.Length; i++)
 		{
 			if (i < exitindex)
 			{
-				targetIndicatorCache[i].transform.position = player.targetablePoints[i].toV3() + Vector3.up * 1.4f;
+				targetIndicatorCache[i].transform.position = playerController.activeMech.targetablePoints[i].toV3() + Vector3.up * 1.4f;
 				targetIndicatorCache[i].SetActive(true);
 			}
 			else

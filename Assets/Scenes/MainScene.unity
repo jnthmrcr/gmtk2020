@@ -3366,6 +3366,7 @@ MonoBehaviour:
   myMechs:
   - {fileID: 52102614}
   - {fileID: 827255823}
+  activeMech: {fileID: 0}
   indicatorwave1:
     serializedVersion: 2
     m_Curve:
@@ -12216,12 +12217,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 702568112}
     m_Modifications:
-    - target: {fileID: 1002855550685978661, guid: a0aeef49d63a9074896a7fa887b3f073,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -2350856453191281872, guid: 993d929eae0e57e48bfbfc8fc3cc2a9c,
-        type: 3}
     - target: {fileID: 8291533335423112457, guid: a0aeef49d63a9074896a7fa887b3f073,
         type: 3}
       propertyPath: m_LocalPosition.x

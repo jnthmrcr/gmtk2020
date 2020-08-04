@@ -10,6 +10,7 @@ public class PlayerCursor : MonoBehaviour
 	[SerializeField] GameObject playerTargettingPrefab;
 	[SerializeField] LayerMask enemyMask;
 	[SerializeField] LayerMask friendlyMask;
+	[SerializeField] LayerMask indicatorMask;
 	[SerializeField] float curorLerpSpeed = 20f;
 	[SerializeField] GameObject largeDiamondCursor;
 	[SerializeField] GameObject smallDiamondCursor;
@@ -46,22 +47,30 @@ public class PlayerCursor : MonoBehaviour
 		goalPoint = new Vector3(Mathf.Round(worldPoint.x), 0, Mathf.Round(worldPoint.z));
 		float goalY = 0;
 
-		Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask | enemyMask);
+		Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask | enemyMask | indicatorMask);
 		if (colliders.Length > 0)
 		{
 			SetLargeCursor(true);
 			goalY = 1f;
 			if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
 			{
-				if (Input.GetMouseButtonDown(1))
-					if (1 << colliders[0].gameObject.layer == friendlyMask)
+				if (1 << colliders[0].gameObject.layer == friendlyMask)
+				{
+					if (Input.GetMouseButtonDown(1))
 						colliders[0].GetComponent<PlayerMech>().SetActiveMech();
+				}
+				else if (1 << colliders[0].gameObject.layer == indicatorMask)
+				{
+					// we're touching an indicator
+				}
+				else
+				{
+					// then i guess we hit an enemy?
+					enemyRangeIndicator.SetActive(true);
+					enemyRangeIndicator.transform.position = goalPoint;
+				}
 			}
-			else
-			{ // then i guess we hit an enemy?
-				enemyRangeIndicator.SetActive(true);
-				enemyRangeIndicator.transform.position = goalPoint;
-			}
+			else { }
 		}
 		else
 		{

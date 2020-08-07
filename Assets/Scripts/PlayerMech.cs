@@ -21,8 +21,9 @@ public class PlayerMech : Pawn
 		targetIndicatorCache = new GameObject[41];
 		for (int i = 0; i < targetIndicatorCache.Length; i++)
 		{
-			targetIndicatorCache[i] = Instantiate(indicatorprefab, Vector3.zero, Quaternion.Euler(90f, 45f, 0f), transform);
+			targetIndicatorCache[i] = Instantiate(indicatorprefab, Vector3.zero, Quaternion.Euler(90f, 45f, 0f));
 			targetIndicatorCache[i].SetActive(false);
+			targetIndicatorCache[i].hideFlags = HideFlags.HideInHierarchy;
 		}
 	}
 

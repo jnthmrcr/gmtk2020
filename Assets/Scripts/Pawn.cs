@@ -74,20 +74,19 @@ public class Pawn : MonoBehaviour
 
 	IEnumerator MoveSequence(Vector3[] path, Vector3 dest)
 	{
-		float progress = 0;
-		int floor;
-		foreach (Vector3 p in path)
+		float progress = path.Length - 1;
+		int ceil;
+		// foreach (Vector3 p in path)
+		// {
+		// 	print(p);
+		// }
+		while (progress > 0)
 		{
-			print(p);
-		}
-		while (progress < path.Length)
-		{
-			progress += Time.deltaTime;
+			progress -= Time.deltaTime * 4f;
 			//print(progress);
-			//Debug.Log(progress);
-			floor = Mathf.FloorToInt(progress);
-			transform.position = Vector3.Lerp(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], progress - floor);
-			Debug.DrawLine(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], Color.cyan, 0.1f);
+			ceil = Mathf.CeilToInt(progress);
+			transform.position = Vector3.Lerp(path[ceil], path[Mathf.Max(ceil - 1, 0)], ceil - progress);
+			//Debug.DrawLine(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], Color.cyan, 0.1f);
 			yield return null;
 		}
 		performingAction = false;

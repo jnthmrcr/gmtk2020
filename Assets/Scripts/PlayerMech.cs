@@ -93,8 +93,10 @@ public class PlayerMech : Pawn
 		hp.text = (7).ToString();
 	}
 
-	public void SetActiveMech()
+	public override void SetActivePawn()
 	{
+		base.SetActivePawn();
+
 		// THERE CAN ONLY BE ONE
 		player.SetActiveMech(this);
 

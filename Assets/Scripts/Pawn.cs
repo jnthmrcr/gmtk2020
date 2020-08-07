@@ -89,6 +89,10 @@ public class Pawn : MonoBehaviour
 			//Debug.DrawLine(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], Color.cyan, 0.1f);
 			yield return null;
 		}
+		GetPersonalMap(transform.position, moveDist);
+		FindNavigableNodes(transform.position, moveDist);
+		SetActivePawn();
+
 		performingAction = false;
 		yield break;
 	}
@@ -299,5 +303,10 @@ public class Pawn : MonoBehaviour
 		GetPersonalMap(transform.position, moveDist);
 		FindNavigableNodes(transform.position, moveDist);
 		FindTargettableNodes(transform.position, attackDist, windX, windY);
+	}
+
+	public virtual void SetActivePawn()
+	{
+
 	}
 }

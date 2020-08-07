@@ -58,7 +58,7 @@ public class PlayerCursor : MonoBehaviour
 				if (Input.GetMouseButtonDown(1))
 				{ // rmb, selects mech pawns during player turn
 					if (1 << colliders[0].gameObject.layer == friendlyMask)
-						colliders[0].GetComponent<PlayerMech>().SetActiveMech();
+						colliders[0].GetComponent<PlayerMech>().SetActivePawn();
 				}
 				else if (Input.GetMouseButtonDown(0))
 				{ // lmb, selects indicator/confirms action

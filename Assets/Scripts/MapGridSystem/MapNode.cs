@@ -20,4 +20,14 @@ public class MapNode
 		gridX = _gridX;
 		gridY = _gridY;
 	}
+
+	public MapNode(MapNode clone) // fuck you reference copy
+	{
+		walkable = clone.walkable;
+		worldPosition = clone.worldPosition;
+		gridX = clone.gridX;
+		gridY = clone.gridY;
+		cost = clone.cost;
+		parent = clone.parent;
+	}
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class MapGrid
 {
 	public MapGrid parentMap;
-    public MapNode[,] nodes;
-    public int sizeX, sizeY;
+	public MapNode[, ] nodes;
+	public int sizeX, sizeY;
 	public int minX, minY;
 	bool filled = false;
 
@@ -35,6 +35,8 @@ public class MapGrid
 			{
 				MapNode subMapNode = nodes[minX + x, minY + y];
 				MapNode newNode = new MapNode(subMapNode.walkable, subMapNode.worldPosition, x, y); // copy values, not reference
+				//MapNode newNode = new MapNode(subMapNode); // copy values, not reference
+
 				submap.nodes[x, y] = newNode;
 			}
 		}

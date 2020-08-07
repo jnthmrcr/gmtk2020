@@ -35,6 +35,8 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
+	bool performingAction;
+
 	protected virtual void Start()
 	{
 		HitPoints = 1;
@@ -53,7 +55,43 @@ public class Pawn : MonoBehaviour
 
 	public void Move(Vector3 worldPosition)
 	{
+		performingAction = true;
+		MapNode targetNode = personalMap.NodeFromWorldPosition(worldPosition, transform.position);
+		int pathLength = targetNode.cost + 1;
+		//print(worldPosition + " " + targetNode.worldPosition);
+		Vector3[] nodePath = new Vector3[pathLength];
+		// get a path
+		for (int i = 0; i < pathLength; i++)
+		{
+			nodePath[i] = targetNode.worldPosition;
+			//Debug.DrawLine(targetNode.worldPosition, targetNode.parent.worldPosition, Color.cyan, 3f);
+			targetNode = targetNode.parent; // go up the chain
+			print("hi");
+		}
+		print(nodePath);
+		StartCoroutine(MoveSequence(nodePath, worldPosition));
+	}
 
+	IEnumerator MoveSequence(Vector3[] path, Vector3 dest)
+	{
+		float progress = 0;
+		int floor;
+		foreach (Vector3 p in path)
+		{
+			print(p);
+		}
+		while (progress < path.Length)
+		{
+			progress += Time.deltaTime;
+			//print(progress);
+			//Debug.Log(progress);
+			floor = Mathf.FloorToInt(progress);
+			transform.position = Vector3.Lerp(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], progress - floor);
+			Debug.DrawLine(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], Color.cyan, 0.1f);
+			yield return null;
+		}
+		performingAction = false;
+		yield break;
 	}
 
 	public void FindNavigableNodes(Vector3 startPos, int distance)

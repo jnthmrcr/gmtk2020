@@ -14,7 +14,6 @@ public class PlayerMech : Pawn
 
 	GameObject[] targetIndicatorCache;
 
-
 	protected override void Start()
 	{
 		base.Start();
@@ -51,7 +50,6 @@ public class PlayerMech : Pawn
 
 		//print("startnotede " + startNode.gridX + " " + startNode.gridY);
 
-
 		//Handles.Label(transform.position + Vector3.back * (mapWorldSize.y + 1), grid.nodes.Length.ToString());
 
 		if (personalMap != null)
@@ -72,20 +70,19 @@ public class PlayerMech : Pawn
 			//	Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
 			//}
 
-			//foreach (MapNode n in navigableNodes)
-			//{
-			//	Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
-			//	Handles.Label(n.worldPosition, n.cost.ToString());
-			//}
+			foreach (MapNode n in navigableNodes)
+			{
+				//Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
+				Handles.Label(n.worldPosition, n.cost.ToString());
+			}
 
-			
 		}
 
 		// targetable point test
-		foreach (Vector2Int p in targetablePoints)
-		{
-			Gizmos.DrawCube(p.toV3(), Vector3.one * 0.8f);
-		}
+		// foreach (Vector2Int p in targetablePoints)
+		// {
+		// 	Gizmos.DrawCube(p.toV3(), Vector3.one * 0.8f);
+		// }
 	}
 
 	public override void PhaseInit(int windX, int windY)
@@ -105,7 +102,7 @@ public class PlayerMech : Pawn
 		MeshRenderer mr;
 		float ratio;
 
-		int exitindex =	navigableNodes.Count;
+		int exitindex = navigableNodes.Count;
 		for (int i = 0; i < targetIndicatorCache.Length; i++)
 		{
 			if (i < exitindex)
@@ -132,5 +129,10 @@ public class PlayerMech : Pawn
 		{
 			t.SetActive(false);
 		}
+	}
+
+	IEnumerator SetActiveIndicatorAnim()
+	{
+		return null;
 	}
 }

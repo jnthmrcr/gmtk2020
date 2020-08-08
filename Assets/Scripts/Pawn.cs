@@ -8,9 +8,6 @@ public class Pawn : MonoBehaviour
 {
 	// controlled either by player or cpu
 
-	public GridMap gMap;
-	protected PawnMap pMap;
-
 	public MainMap mainMap;
 	public MapGrid personalMap;
 
@@ -130,7 +127,7 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	int GetDistance(GridNode nodeA, GridNode nodeB)
+	int GetDistance(MapNode nodeA, MapNode nodeB)
 	{
 		int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
 		int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);

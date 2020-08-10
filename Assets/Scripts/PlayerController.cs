@@ -4,54 +4,55 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] PlayerCursor myCursor;
-    [SerializeField] List<PlayerMech> myMechs;
-    public PlayerMech activeMech;
+	[SerializeField] PlayerCursor myCursor;
+	[SerializeField] List<PlayerMech> myMechs;
+	public PlayerMech activeMech;
 
-    [SerializeField] AnimationCurve indicatorwave1;
-    [SerializeField] AnimationCurve indicatorwave2;
+	[SerializeField] AnimationCurve indicatorwave1;
+	[SerializeField] AnimationCurve indicatorwave2;
 
-    bool phaseActive;
+	bool phaseActive;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        foreach (PlayerMech mech in myMechs)
-		{
-            mech.player = this;
-		}
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void SetPhaseActive(bool isActive)
+	// Start is called before the first frame update
+	void Start()
 	{
-        phaseActive = isActive;
-        if (isActive)
+		foreach (PlayerMech mech in myMechs)
 		{
-            myCursor.ShowCursor(true);
+			mech.player = this;
+		}
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+
+	}
+
+	public void SetPhaseActive(bool isActive)
+	{
+		phaseActive = isActive;
+		if (isActive)
+		{
+			myCursor.ShowCursor(true);
 
 			foreach (PlayerMech mech in myMechs)
 			{
-                mech.PhaseInit(0, 0);
+				mech.PhaseInit(0, 0);
 			}
 
-		} else
-		{
-            myCursor.ShowCursor(false);
-        }
-    }
-
-    public void SetActiveMech(PlayerMech newMech)
-	{
-        if (activeMech != null)
-		{
-            activeMech.DeselectMech();
 		}
-        activeMech = newMech;
+		else
+		{
+			myCursor.ShowCursor(false);
+		}
+	}
+
+	public void SetActiveMech(PlayerMech newMech)
+	{
+		if (activeMech != null)
+		{
+			activeMech.DeselectMech();
+		}
+		activeMech = newMech;
 	}
 }

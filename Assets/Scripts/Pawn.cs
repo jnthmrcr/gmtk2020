@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,7 +16,8 @@ public class Pawn : MonoBehaviour
 	[SerializeField] protected int attackDist = 4;
 
 	public List<MapNode> navigableNodes;
-	public List<Vector2Int> targetablePoints;
+	public List<Vector3> targetablePoints;
+	public List<MapNode> targetableNodes;
 
 	private int _hitPoints;
 	[SerializeField] protected TextMeshPro hp;
@@ -167,7 +168,8 @@ public class Pawn : MonoBehaviour
 		int x = Mathf.RoundToInt(startpos.x) + windX - distance;
 		int y = Mathf.RoundToInt(startpos.z) + windY;
 
-		targetablePoints = new List<Vector2Int>();
+		List<Vector2Int> possibleTargets = new List<Vector2Int>();
+		targetableNodes = new List<MapNode>(); // clear out targetable nodes
 
 		// get all the points
 		for (int i = 0; i <= distance; i++) // x
@@ -175,16 +177,15 @@ public class Pawn : MonoBehaviour
 			int numPoints = i * 2 + 1;
 			for (int j = 0; j < numPoints; j++) // y
 			{
-				targetablePoints.Add(new Vector2Int(x, y + j));
+				possibleTargets.Add(new Vector2Int(x, y + j));
 				if (i != distance) // if we are not at center
-					targetablePoints.Add(new Vector2Int(x + ((distance - i) * 2), y + j)); // add second mirrored point
+					possibleTargets.Add(new Vector2Int(x + ((distance - i) * 2), y + j)); // add second mirrored point
 			}
 			y--; // start one tile lower every tile
 			x++; // start one tile to the right
 		}
 
 		RaycastHit hit;
-		List<Vector2Int> final = new List<Vector2Int>();
 		Vector3 castPoint = startpos;
 		castPoint = new Vector3(Mathf.RoundToInt(castPoint.x), 0f, Mathf.RoundToInt(castPoint.z));
 
@@ -193,7 +194,7 @@ public class Pawn : MonoBehaviour
 		Vector3 pointRight = castPoint + new Vector3(1, 0, 0);
 		Vector3 pointLeft = castPoint + new Vector3(-1, 0, 0);
 
-		// true if clear
+		// true if clear, could also be checked by accessing map's walkable field
 		bool checkTop = !Physics.CheckSphere(pointTop, 0.1f);
 		bool checkBottom = !Physics.CheckSphere(pointBottom, 0.1f);
 		bool checkRight = !Physics.CheckSphere(pointRight, 0.1f);
@@ -205,20 +206,20 @@ public class Pawn : MonoBehaviour
 		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f);
 
 		// raycast check all points
-		for (int i = 0; i < targetablePoints.Count; i++)
+		for (int i = 0; i < possibleTargets.Count; i++)
 		{
-			Vector2Int targetablePoint = targetablePoints[i];
+			Vector2Int targetablePoint = possibleTargets[i];
 
 			if (!LineCastTest(castPoint, targetablePoint)) // only do these next checks if node is not accessible normally
 			{
-				if (checkTop && targetablePoints[i].y > castPoint.z)
+				if (checkTop && targetablePoint.y > castPoint.z)
 				{
 					if (checkTopLeft && targetablePoint.x < castPoint.x)
 					{
 						if (LineCastTest(pointTop, targetablePoint, true))
 							continue;
 					}
-					else if (checkTopRight && targetablePoints[i].x > castPoint.x)
+					else if (checkTopRight && targetablePoint.x > castPoint.x)
 					{
 						if (LineCastTest(pointTop, targetablePoint, true))
 							continue;
@@ -231,7 +232,7 @@ public class Pawn : MonoBehaviour
 						if (LineCastTest(pointBottom, targetablePoint, true))
 							continue;
 					}
-					else if (checkBottomRight && targetablePoints[i].x > castPoint.x)
+					else if (checkBottomRight && targetablePoint.x > castPoint.x)
 					{
 						if (LineCastTest(pointBottom, targetablePoint, true))
 							continue;
@@ -239,8 +240,6 @@ public class Pawn : MonoBehaviour
 				}
 				if (checkRight && targetablePoint.x > castPoint.x)
 				{
-					//targetable = CornerLineCast(pointRight, targetablePoints[i].toV3());
-					//trying to get it to not select a thing if we're resting on a corner/ fuck.
 					if (checkTopRight && targetablePoint.y > castPoint.z)
 					{
 						if (LineCastTest(pointRight, targetablePoint, true))
@@ -267,7 +266,6 @@ public class Pawn : MonoBehaviour
 				}
 			}
 		}
-		targetablePoints = final; // it shouldn't need to be cleared since we're overriding it ????
 
 		bool LineCastTest(Vector3 point, Vector2Int target, bool debug = false)
 		{
@@ -281,7 +279,7 @@ public class Pawn : MonoBehaviour
 				{
 					if (debug)
 						Debug.DrawLine(point, target3);
-					final.Add(target);
+					AddTargetableNodeFromPoint(target3);
 					return true;
 				}
 			}
@@ -289,9 +287,15 @@ public class Pawn : MonoBehaviour
 			{
 				if (debug)
 					Debug.DrawLine(point, target3);
-				final.Add(target);
+				AddTargetableNodeFromPoint(target3);
 				return true;
 			}
+		}
+
+		void AddTargetableNodeFromPoint(Vector3 point3)
+		{
+			targetablePoints.Add(point3);
+			targetableNodes.Add(mainMap.grid.NodeFromWorldPosition(point3, transform.position));
 		}
 	}
 

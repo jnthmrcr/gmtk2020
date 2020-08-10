@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -130,7 +130,7 @@ public class PlayerCursor : MonoBehaviour
 		{
 			if (i < exitindex)
 			{
-				targetIndicatorCache[i].transform.position = playerController.activeMech.targetablePoints[i].toV3() + Vector3.up * 1.4f;
+				targetIndicatorCache[i].transform.position = playerController.activeMech.targetablePoints[i] + Vector3.up * 1.4f;
 				targetIndicatorCache[i].SetActive(true);
 			}
 			else

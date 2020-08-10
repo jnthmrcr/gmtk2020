@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -21,6 +21,7 @@ public class Pawn : MonoBehaviour
 
 	private int _hitPoints;
 	[SerializeField] protected TextMeshPro hp;
+	[SerializeField] protected Transform pawnMesh;
 
 	protected int HitPoints
 	{
@@ -80,11 +81,13 @@ public class Pawn : MonoBehaviour
 		// }
 		while (progress > 0)
 		{
-			progress -= Time.deltaTime * 4f;
+			progress -= Time.deltaTime * 8f;
 			//print(progress);
 			ceil = Mathf.CeilToInt(progress);
 			transform.position = Vector3.Lerp(path[ceil], path[Mathf.Max(ceil - 1, 0)], ceil - progress);
 			//Debug.DrawLine(path[floor], path[Mathf.Min(floor + 1, path.Length - 1)], Color.cyan, 0.1f);
+			//pawnMesh.localScale = Vector3.Lerp(new Vector3(1f, 0.2f, 1f), new Vector3(0.65f, 0.2f, 0.65f), progress % 1f);
+			//transform.localScale = Vector3.one * Mathf.Lerp(1f, 0.65f, progress % 1f);
 			yield return null;
 		}
 		GetPersonalMap(transform.position, moveDist);

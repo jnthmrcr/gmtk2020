@@ -502,6 +502,7 @@ GameObject:
   - component: {fileID: 4740999108837008360}
   - component: {fileID: 4740999108837008357}
   - component: {fileID: 4740999108837008356}
+  - component: {fileID: 6228986065191089363}
   m_Layer: 11
   m_Name: Mech
   m_TagString: Untagged
@@ -551,13 +552,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609da492d8c98d4489d748b04529471a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gMap: {fileID: 0}
   mainMap: {fileID: 0}
   moveDist: 4
   wind: {x: 0, y: 0}
   attackDist: 4
   targetablePoints: []
   hp: {fileID: 706235372091533831}
+  pawnMesh: {fileID: 706235373114515344}
+  player: {fileID: 0}
   indicatorprefab: {fileID: 4534826407300173027, guid: 0bd59909e37cbd940a4945479c227eb6,
     type: 3}
   mechName: {fileID: 706235371857939774}
+--- !u!114 &6228986065191089363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740999108837008359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55491521ee303ed4aa17a17a4681d327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitpointsStarting: 6
+  hitPointsCurrent: 6
+  deathPrefab: {fileID: 0}

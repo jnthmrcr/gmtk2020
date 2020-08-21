@@ -307,7 +307,7 @@ public class Pawn : MonoBehaviour
 		void AddTargetableNodeFromPoint(Vector3 point3)
 		{
 			targetablePoints.Add(point3);
-			targetableNodes.Add(personalMap.NodeFromWorldPosition(point3, transform.position));
+			targetableNodes.Add(mainMap.grid.NodeFromWorldPosition(point3, Vector3.zero));
 			targetableNodes[targetableNodes.Count - 1].costToAttack = GetDistance(point3, transform.position);
 		}
 	}

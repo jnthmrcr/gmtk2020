@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -13,6 +13,7 @@ public class PlayerCursor : MonoBehaviour
 	[SerializeField] float curorLerpSpeed = 20f;
 	[SerializeField] GameObject largeDiamondCursor;
 	[SerializeField] GameObject smallDiamondCursor;
+	Pawn cursorPawn;
 
 	Vector3 goalPoint;
 
@@ -25,6 +26,7 @@ public class PlayerCursor : MonoBehaviour
 	{
 		gm = GetComponentInParent<GameManager>();
 		playerController = GetComponentInParent<PlayerController>();
+		cursorPawn = GetComponent<Pawn>();
 	}
 
 	private void Start()
@@ -123,14 +125,14 @@ public class PlayerCursor : MonoBehaviour
 	void DrawTargetting()
 	{
 		//todo: this method should be more easily accessed somehow
-		playerController.activeMech.FindTargettableNodes(transform.position, 4);
+		cursorPawn.FindTargettableNodes(transform.position, 4);
 
-		int exitindex = playerController.activeMech.targetablePoints.Count;
+		int exitindex = cursorPawn.targetablePoints.Count;
 		for (int i = 0; i < targetIndicatorCache.Length; i++)
 		{
 			if (i < exitindex)
 			{
-				targetIndicatorCache[i].transform.position = playerController.activeMech.targetablePoints[i] + Vector3.up * 1.4f;
+				targetIndicatorCache[i].transform.position = cursorPawn.targetablePoints[i] + Vector3.up * 1.4f;
 				targetIndicatorCache[i].SetActive(true);
 			}
 			else

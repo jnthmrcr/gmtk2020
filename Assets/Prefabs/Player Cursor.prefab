@@ -530,6 +530,7 @@ GameObject:
   - component: {fileID: 8291533335423112457}
   - component: {fileID: 8291533335423112456}
   - component: {fileID: 8291533335423112566}
+  - component: {fileID: 105886123}
   m_Layer: 0
   m_Name: Player Cursor
   m_TagString: Untagged
@@ -666,7 +667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81733aac4c7e03b45a8459126559e670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   enemyRangeIndicator: {fileID: 8291533335365530796}
   playerTargettingPrefab: {fileID: 5783770734038141597, guid: 9b9eb6015b74a2d4986450f66eaeee70,
     type: 3}
@@ -682,3 +682,22 @@ MonoBehaviour:
   curorLerpSpeed: 30
   largeDiamondCursor: {fileID: 1939996773}
   smallDiamondCursor: {fileID: 3527457129490789435}
+--- !u!114 &105886123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291533335423112459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c7ccf8b9ffbf5543af49d1aa22717db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMap: {fileID: 0}
+  moveDist: 4
+  wind: {x: 0, y: 0}
+  attackDist: 4
+  targetablePoints: []
+  hp: {fileID: 0}
+  pawnMesh: {fileID: 0}

@@ -50,9 +50,12 @@ public class PlayerCursor : MonoBehaviour
 		goalPoint = new Vector3(Mathf.Round(worldPoint.x), 0, Mathf.Round(worldPoint.z));
 		float goalY = 0;
 
+		bool cursorCollision = false;
+
 		Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask | enemyMask | indicatorMask);
 		if (colliders.Length > 0)
 		{
+			cursorCollision = true;
 			SetLargeCursor(true);
 			goalY = 1f;
 			if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
@@ -95,7 +98,10 @@ public class PlayerCursor : MonoBehaviour
 		}
 
 		// now we set cursor position
-		transform.position = Vector3.Lerp(transform.position, goalPoint + goalY * Vector3.up, Time.deltaTime * curorLerpSpeed);
+		if (cursorCollision)
+			transform.position = Vector3.Lerp(transform.position, goalPoint + goalY * Vector3.up, Time.deltaTime * curorLerpSpeed);
+		else
+			transform.position = worldPoint + goalY * Vector3.up;
 	}
 
 	private void OnApplicationFocus(bool focus)

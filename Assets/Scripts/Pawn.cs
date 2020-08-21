@@ -141,6 +141,14 @@ public class Pawn : MonoBehaviour
 		return 2 * dstX + (dstY - dstX);
 	}
 
+	int GetDistance(Vector3 a, Vector3 b)
+	{
+		int distX = (int) Mathf.Abs(a.x - b.x);
+		int distY = (int) Mathf.Abs(a.z - b.z);
+
+		return distX + distY;
+	}
+
 	void CheckNeighbor(ref List<MapNode> nodelist, MapNode node, int offX, int offY, int cost)
 	{
 		// get personal grid coordiantes of neighbor
@@ -300,6 +308,7 @@ public class Pawn : MonoBehaviour
 		{
 			targetablePoints.Add(point3);
 			targetableNodes.Add(mainMap.grid.NodeFromWorldPosition(point3, transform.position));
+			targetableNodes[targetableNodes.Count - 1].costToAttack = GetDistance(point3, transform.position);
 		}
 	}
 

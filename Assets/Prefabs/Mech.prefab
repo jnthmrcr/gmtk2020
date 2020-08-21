@@ -553,6 +553,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMap: {fileID: 0}
+  targettingObstacle:
+    serializedVersion: 2
+    m_Bits: 3584
   moveDist: 4
   wind: {x: 0, y: 0}
   attackDist: 4

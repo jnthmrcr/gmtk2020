@@ -10,7 +10,7 @@ public class Pawn : MonoBehaviour
 
 	public MainMap mainMap;
 	public MapGrid personalMap;
-
+	[SerializeField] protected LayerMask targettingObstacle;
 	[SerializeField] protected int moveDist = 4;
 	[SerializeField] protected Vector2Int wind;
 	[SerializeField] protected int attackDist = 4;
@@ -199,15 +199,15 @@ public class Pawn : MonoBehaviour
 		Vector3 pointLeft = castPoint + new Vector3(-1, 0, 0);
 
 		// true if clear, could also be checked by accessing map's walkable field
-		bool checkTop = !Physics.CheckSphere(pointTop, 0.1f);
-		bool checkBottom = !Physics.CheckSphere(pointBottom, 0.1f);
-		bool checkRight = !Physics.CheckSphere(pointRight, 0.1f);
-		bool checkLeft = !Physics.CheckSphere(pointLeft, 0.1f);
+		bool checkTop = !Physics.CheckSphere(pointTop, 0.1f, targettingObstacle);
+		bool checkBottom = !Physics.CheckSphere(pointBottom, 0.1f, targettingObstacle);
+		bool checkRight = !Physics.CheckSphere(pointRight, 0.1f, targettingObstacle);
+		bool checkLeft = !Physics.CheckSphere(pointLeft, 0.1f, targettingObstacle);
 
-		bool checkTopRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, 1), 0.1f);
-		bool checkTopLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, 1), 0.1f);
-		bool checkBottomRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, -1), 0.1f);
-		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f);
+		bool checkTopRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, 1), 0.1f, targettingObstacle);
+		bool checkTopLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, 1), 0.1f, targettingObstacle);
+		bool checkBottomRight = !Physics.CheckSphere(castPoint + new Vector3(1, 0, -1), 0.1f, targettingObstacle);
+		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f, targettingObstacle);
 
 		// raycast check all points
 		for (int i = 0; i < possibleTargets.Count; i++)
@@ -275,7 +275,7 @@ public class Pawn : MonoBehaviour
 		{
 			Vector3 target3 = target.toV3();
 
-			if (Physics.Linecast(point, target3, out hit))
+			if (Physics.Linecast(point, target3, out hit, targettingObstacle))
 			{
 				if (Vector3.SqrMagnitude(hit.point - target3) >= 0.55f) // slightly more than srt2 dist
 					return false; // not close enough to count

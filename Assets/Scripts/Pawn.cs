@@ -173,6 +173,7 @@ public class Pawn : MonoBehaviour
 
 		List<Vector2Int> possibleTargets = new List<Vector2Int>();
 		targetableNodes = new List<MapNode>(); // clear out targetable nodes
+		targetablePoints = new List<Vector3>();
 
 		// get all the points
 		for (int i = 0; i <= distance; i++) // x

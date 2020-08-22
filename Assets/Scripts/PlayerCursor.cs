@@ -101,6 +101,7 @@ public class PlayerCursor : MonoBehaviour
 		if (Input.GetMouseButton(2))
 		{
 			DrawTargetting();
+			cursorCollision = true; // snap to grid when aiming cause it works better or something idk
 		}
 		if (Input.GetMouseButtonUp(2))
 		{

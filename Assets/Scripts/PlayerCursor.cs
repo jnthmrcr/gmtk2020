@@ -67,11 +67,21 @@ public class PlayerCursor : MonoBehaviour
 				}
 				else if (Input.GetMouseButtonDown(0))
 				{ // lmb, selects indicator/confirms action
+					//if (gm.currentActionMode == GameManager.actionMode.move)
+					//{
 					if (1 << colliders[0].gameObject.layer == indicatorMask)
 					{
 						playerController.activeMech.Move(goalPoint);
 					}
 				}
+				// else if (gm.currentActionMode == GameManager.actionMode.attack)
+				// {
+				// 	// idk fuck, grab the gameobject at this position and get the damage sys for it?
+				// 	if (1 << colliders[0].gameObject.layer == enemyMask)
+				// 	{
+				// 		//playerController.activeMech.Attack(goalPoint);
+				// 	}
+				// }
 				else
 				{ // if we're doing nothing
 					if (1 << colliders[0].gameObject.layer == enemyMask)

@@ -12,6 +12,7 @@ public class MapNode
 	public int cost = 999;
 	public MapNode parent;
 	// ref to either the obstacle or pawn on this node
+	public int costToAttack = 999;
 
 	public MapNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
 	{

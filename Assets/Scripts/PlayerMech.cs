@@ -101,6 +101,20 @@ public class PlayerMech : Pawn
 		// THERE CAN ONLY BE ONE
 		player.SetActiveMech(this);
 
+		ShowMovementInidicators();
+
+		// if (moveIfTrue)
+		// {
+		// 	ShowMovementInidicators();
+		// }
+		// else
+		// {
+		// 	ShowAttackIndicators();
+		// }
+	}
+
+	public void ShowMovementInidicators()
+	{
 		Color bc = indicatorprefab.GetComponent<MeshRenderer>().sharedMaterial.GetColor("_BaseColor");
 		MeshRenderer mr;
 		float ratio;
@@ -115,6 +129,35 @@ public class PlayerMech : Pawn
 
 				mr = targetIndicatorCache[i].GetComponent<MeshRenderer>();
 				ratio = (float) navigableNodes[i].cost / (float) moveDist;
+
+				mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
+				targetIndicatorCache[i].transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
+			}
+			else
+			{ // do not do thing
+				targetIndicatorCache[i].SetActive(false);
+			}
+		}
+	}
+
+	public void ShowAttackIndicators()
+	{
+		FindTargettableNodes(transform.position, attackDist, 0, 0);
+
+		Color bc = new Color(1.4f, 0.3f, 0f);
+		MeshRenderer mr;
+		float ratio;
+
+		int exitindex = targetableNodes.Count;
+		for (int i = 0; i < targetIndicatorCache.Length; i++)
+		{
+			if (i < exitindex)
+			{ // do stuff
+				targetIndicatorCache[i].transform.position = targetableNodes[i].worldPosition + Vector3.up * 1.4f;
+				targetIndicatorCache[i].SetActive(true);
+
+				mr = targetIndicatorCache[i].GetComponent<MeshRenderer>();
+				ratio = (float) targetableNodes[i].costToAttack / (float) moveDist;
 
 				mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
 				targetIndicatorCache[i].transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));

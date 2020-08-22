@@ -3334,6 +3334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTurnPhase: 0
+  currentActionMode: 0
   player: {fileID: 702568113}
 --- !u!4 &702568112
 Transform:
@@ -6198,10 +6199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14db43a480ad83b4eb5461cadbdd7cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unwalkableMask:
-    serializedVersion: 2
-    m_Bits: 512
-  mapWorldSize: {x: 61, y: 21}
 --- !u!114 &1000720772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11983,11 +11980,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: hazard
       objectReference: {fileID: 0}
-    - target: {fileID: 8666588035915738024, guid: 7c06285dc3fea524996f3bd1cf16e903,
-        type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c06285dc3fea524996f3bd1cf16e903, type: 3}
 --- !u!1 &5137791236832525646
@@ -12059,6 +12051,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5723751740998923144, guid: 2e7c0c845a4b8b54ebbad8a8f6aabab3,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 702568111}
     - target: {fileID: 5723751740998923150, guid: 2e7c0c845a4b8b54ebbad8a8f6aabab3,
         type: 3}
       propertyPath: m_Camera
@@ -12217,6 +12214,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 702568112}
     m_Modifications:
+    - target: {fileID: 105886123, guid: a0aeef49d63a9074896a7fa887b3f073, type: 3}
+      propertyPath: mainMap
+      value: 
+      objectReference: {fileID: 1000720772}
     - target: {fileID: 8291533335423112457, guid: a0aeef49d63a9074896a7fa887b3f073,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12277,11 +12278,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Cursor
       objectReference: {fileID: 0}
-    - target: {fileID: 8291533335423112566, guid: a0aeef49d63a9074896a7fa887b3f073,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 52102614}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0aeef49d63a9074896a7fa887b3f073, type: 3}
 --- !u!1001 &8657570038849635731

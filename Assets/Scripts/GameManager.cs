@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour
 {
 	public enum gamePhase { environmentTurn, enemyTurn, playerTurn, noTurn }
 	public gamePhase currentTurnPhase;
-	public enum actionMode { move, attack }
-	public actionMode currentActionMode;
 
 	[SerializeField] PlayerController player;
 
@@ -19,7 +17,6 @@ public class GameManager : MonoBehaviour
 	void BeginGame()
 	{
 		currentTurnPhase = gamePhase.environmentTurn;
-		currentActionMode = actionMode.move;
 		NextTurn();
 	}
 
@@ -56,24 +53,6 @@ public class GameManager : MonoBehaviour
 				player.SetPhaseActive(true);
 				break;
 			case gamePhase.noTurn:
-				break;
-			default:
-				break;
-		}
-	}
-
-	public void SetUserMode(actionMode newMode)
-	{
-		currentActionMode = newMode;
-
-		switch (currentActionMode)
-		{
-			case actionMode.attack:
-				//player.activeMech.set
-				player.SetAttackIndicators();
-				break;
-			case actionMode.move:
-				player.SetMoveIndicators();
 				break;
 			default:
 				break;

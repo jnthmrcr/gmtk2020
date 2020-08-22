@@ -67,8 +67,6 @@ public class PlayerCursor : MonoBehaviour
 				}
 				else if (Input.GetMouseButtonDown(0))
 				{ // lmb, selects indicator/confirms action
-					//if (gm.currentActionMode == GameManager.actionMode.move)
-					//{
 					if (1 << colliders[0].gameObject.layer == indicatorMask)
 					{
 						playerController.activeMech.Move(goalPoint);

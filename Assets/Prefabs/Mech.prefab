@@ -560,10 +560,13 @@ MonoBehaviour:
   wind: {x: 0, y: 0}
   attackDist: 4
   targetablePoints: []
+  targetableDamageTakers: []
   hp: {fileID: 706235372091533831}
   pawnMesh: {fileID: 706235373114515344}
   player: {fileID: 0}
   indicatorprefab: {fileID: 4534826407300173027, guid: 0bd59909e37cbd940a4945479c227eb6,
+    type: 3}
+  targettingPrefab: {fileID: 5783770734038141597, guid: 9b9eb6015b74a2d4986450f66eaeee70,
     type: 3}
   mechName: {fileID: 706235371857939774}
 --- !u!114 &6228986065191089363

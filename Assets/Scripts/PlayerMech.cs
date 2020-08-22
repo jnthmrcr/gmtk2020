@@ -10,20 +10,30 @@ public class PlayerMech : Pawn
 {
 	public PlayerController player;
 	[SerializeField] GameObject indicatorprefab;
+	[SerializeField] GameObject targettingPrefab;
 	[SerializeField] TextMeshPro mechName;
 
-	GameObject[] targetIndicatorCache;
+	GameObject[] indicatorCache;
+	GameObject[] targettingCache;
 
 	protected override void Start()
 	{
 		base.Start();
 
-		targetIndicatorCache = new GameObject[41];
-		for (int i = 0; i < targetIndicatorCache.Length; i++)
+		indicatorCache = new GameObject[41];
+		for (int i = 0; i < indicatorCache.Length; i++)
 		{
-			targetIndicatorCache[i] = Instantiate(indicatorprefab, Vector3.zero, Quaternion.Euler(90f, 45f, 0f));
-			targetIndicatorCache[i].SetActive(false);
-			targetIndicatorCache[i].hideFlags = HideFlags.HideInHierarchy;
+			indicatorCache[i] = Instantiate(indicatorprefab, Vector3.zero, Quaternion.Euler(90f, 45f, 0f));
+			indicatorCache[i].SetActive(false);
+			indicatorCache[i].hideFlags = HideFlags.HideInHierarchy;
+		}
+
+		targettingCache = new GameObject[24]; // should be enough?
+		for (int i = 0; i < targettingCache.Length; i++)
+		{
+			targettingCache[i] = Instantiate(targettingPrefab, Vector3.zero, Quaternion.Euler(90f, 0f, 0f));
+			targettingCache[i].SetActive(false);
+			targettingCache[i].hideFlags = HideFlags.HideInHierarchy;
 		}
 	}
 
@@ -102,6 +112,7 @@ public class PlayerMech : Pawn
 		player.SetActiveMech(this);
 
 		ShowMovementInidicators();
+		ShowAttackIndicators();
 
 		// if (moveIfTrue)
 		// {
@@ -120,22 +131,22 @@ public class PlayerMech : Pawn
 		float ratio;
 
 		int exitindex = navigableNodes.Count;
-		for (int i = 0; i < targetIndicatorCache.Length; i++)
+		for (int i = 0; i < indicatorCache.Length; i++)
 		{
 			if (i < exitindex)
 			{ // do stuff
-				targetIndicatorCache[i].transform.position = navigableNodes[i].worldPosition + Vector3.up * 1.4f;
-				targetIndicatorCache[i].SetActive(true);
+				indicatorCache[i].transform.position = navigableNodes[i].worldPosition + Vector3.up * 1.4f;
+				indicatorCache[i].SetActive(true);
 
-				mr = targetIndicatorCache[i].GetComponent<MeshRenderer>();
+				mr = indicatorCache[i].GetComponent<MeshRenderer>();
 				ratio = (float) navigableNodes[i].cost / (float) moveDist;
 
 				mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
-				targetIndicatorCache[i].transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
+				indicatorCache[i].transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
 			}
 			else
 			{ // do not do thing
-				targetIndicatorCache[i].SetActive(false);
+				indicatorCache[i].SetActive(false);
 			}
 		}
 	}
@@ -144,34 +155,30 @@ public class PlayerMech : Pawn
 	{
 		FindTargettableNodes(transform.position, attackDist, 0, 0);
 
-		Color bc = new Color(1.4f, 0.3f, 0f);
-		MeshRenderer mr;
-		float ratio;
-
-		int exitindex = targetableNodes.Count;
-		for (int i = 0; i < targetIndicatorCache.Length; i++)
+		// highlight nodes that can be attacked
+		int exitindex = targetableDamageTakers.Count;
+		for (int i = 0; i < targettingCache.Length; i++)
 		{
 			if (i < exitindex)
-			{ // do stuff
-				targetIndicatorCache[i].transform.position = targetableNodes[i].worldPosition + Vector3.up * 1.4f;
-				targetIndicatorCache[i].SetActive(true);
-
-				mr = targetIndicatorCache[i].GetComponent<MeshRenderer>();
-				ratio = (float) targetableNodes[i].costToAttack / (float) moveDist;
-
-				mr.material.SetColor("_BaseColor", new Color(bc.r, bc.g, bc.b, Mathf.Lerp(.025f, 0.07f, Mathf.Pow(ratio, 3f))));
-				targetIndicatorCache[i].transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, Mathf.Pow(ratio, 2f));
+			{
+				targettingCache[i].transform.position = targetableDamageTakers[i].transform.position + Vector3.up * 1.4f;
+				targettingCache[i].SetActive(true);
 			}
 			else
-			{ // do not do thing
-				targetIndicatorCache[i].SetActive(false);
+			{
+				targettingCache[i].SetActive(false);
 			}
 		}
 	}
 
 	public void DeselectMech()
 	{
-		foreach (GameObject t in targetIndicatorCache)
+		foreach (GameObject t in indicatorCache)
+		{
+			t.SetActive(false);
+		}
+
+		foreach (GameObject t in targettingCache)
 		{
 			t.SetActive(false);
 		}

@@ -55,14 +55,4 @@ public class PlayerController : MonoBehaviour
 		}
 		activeMech = newMech;
 	}
-
-	public void SetMoveIndicators()
-	{
-		activeMech.ShowMovementInidicators();
-	}
-
-	public void SetAttackIndicators()
-	{
-		activeMech.ShowAttackIndicators();
-	}
 }

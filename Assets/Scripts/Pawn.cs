@@ -17,7 +17,7 @@ public class Pawn : MonoBehaviour
 
 	public List<MapNode> navigableNodes;
 	public List<Vector3> targetablePoints;
-	public List<MapNode> targetableNodes;
+	public List<DamageTaker> targetableDamageTakers;
 
 	private int _hitPoints;
 	[SerializeField] protected TextMeshPro hp;
@@ -180,8 +180,8 @@ public class Pawn : MonoBehaviour
 		int y = Mathf.RoundToInt(startpos.z) + windY;
 
 		List<Vector2Int> possibleTargets = new List<Vector2Int>();
-		targetableNodes = new List<MapNode>(); // clear out targetable nodes
 		targetablePoints = new List<Vector3>();
+		targetableDamageTakers = new List<DamageTaker>();
 
 		// get all the points
 		for (int i = 0; i <= distance; i++) // x
@@ -307,8 +307,16 @@ public class Pawn : MonoBehaviour
 		void AddTargetableNodeFromPoint(Vector3 point3)
 		{
 			targetablePoints.Add(point3);
-			targetableNodes.Add(mainMap.grid.NodeFromWorldPosition(point3, Vector3.zero));
-			targetableNodes[targetableNodes.Count - 1].costToAttack = GetDistance(point3, transform.position);
+			// check to see if node has a damagetaker
+			Collider[] hits = Physics.OverlapSphere(point3, 0.1f, targettingObstacle);
+			if (hits.Length > 0)
+			{
+				DamageTaker dt = hits[0].GetComponent<DamageTaker>();
+				if (dt != null)
+				{
+					targetableDamageTakers.Add(dt);
+				}
+			}
 		}
 	}
 

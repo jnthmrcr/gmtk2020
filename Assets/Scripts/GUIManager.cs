@@ -51,12 +51,12 @@ public class GUIManager : MonoBehaviour
 
 	public void BtnAttack()
 	{
-		gameManager.SetUserMode(GameManager.actionMode.attack);
+		//gameManager.SetUserMode(GameManager.actionMode.attack);
 	}
 
 	public void BtnMove()
 	{
-		gameManager.SetUserMode(GameManager.actionMode.move);
+		//gameManager.SetUserMode(GameManager.actionMode.move);
 	}
 
 	public void BtnForcast()

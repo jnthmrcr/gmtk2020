@@ -23,6 +23,8 @@ public class Pawn : MonoBehaviour
 	[SerializeField] protected TextMeshPro hp;
 	[SerializeField] protected Transform pawnMesh;
 
+	private Vector2Int[] possibleTargetsOffsets;
+
 	protected int HitPoints
 	{
 		get { return _hitPoints; }
@@ -35,6 +37,11 @@ public class Pawn : MonoBehaviour
 	}
 
 	bool performingAction;
+
+	protected virtual void Awake()
+	{
+		GeneratePossibleTargetsOffsets();
+	}
 
 	protected virtual void Start()
 	{
@@ -174,27 +181,47 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
+	/// <summary> caches possibleTargetsOffsets for use in FindTargetableNodes</summary>
+	void GeneratePossibleTargetsOffsets()
+	{
+		possibleTargetsOffsets = new Vector2Int[41];
+		int index = 0;
+
+		int x = -attackDist;
+		int y = 0;
+
+		// get all the points
+		for (int i = 0; i <= attackDist; i++) // x
+		{
+			int numPoints = i * 2 + 1;
+			for (int j = 0; j < numPoints; j++) // y
+			{
+				possibleTargetsOffsets[index] = new Vector2Int(x, y + j);
+				index++;
+				if (i != attackDist) // if we are not at center
+				{
+					possibleTargetsOffsets[index] = new Vector2Int(x + ((attackDist - i) * 2), y + j);
+					index++;
+				}
+			}
+			y--; // start one tile lower every tile
+			x++; // start one tile to the right
+		}
+	}
+
 	public void FindTargettableNodes(Vector3 startpos, int distance, int windX = 0, int windY = 0)
 	{
-		int x = Mathf.RoundToInt(startpos.x) + windX - distance;
+		int x = Mathf.RoundToInt(startpos.x) + windX;
 		int y = Mathf.RoundToInt(startpos.z) + windY;
 
 		List<Vector2Int> possibleTargets = new List<Vector2Int>();
 		targetablePoints = new List<Vector3>();
 		targetableDamageTakers = new List<DamageTaker>();
 
-		// get all the points
-		for (int i = 0; i <= distance; i++) // x
+		// populate possible targets
+		for (int i = 0; i < possibleTargetsOffsets.Length; i++)
 		{
-			int numPoints = i * 2 + 1;
-			for (int j = 0; j < numPoints; j++) // y
-			{
-				possibleTargets.Add(new Vector2Int(x, y + j));
-				if (i != distance) // if we are not at center
-					possibleTargets.Add(new Vector2Int(x + ((distance - i) * 2), y + j)); // add second mirrored point
-			}
-			y--; // start one tile lower every tile
-			x++; // start one tile to the right
+			possibleTargets.Add(new Vector2Int(x + possibleTargetsOffsets[i].x, y + possibleTargetsOffsets[i].y));
 		}
 
 		RaycastHit hit;

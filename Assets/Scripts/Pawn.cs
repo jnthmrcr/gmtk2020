@@ -214,15 +214,8 @@ public class Pawn : MonoBehaviour
 		int x = Mathf.RoundToInt(startpos.x) + windX;
 		int y = Mathf.RoundToInt(startpos.z) + windY;
 
-		List<Vector2Int> possibleTargets = new List<Vector2Int>();
 		targetablePoints = new List<Vector3>();
 		targetableDamageTakers = new List<DamageTaker>();
-
-		// populate possible targets
-		for (int i = 0; i < possibleTargetsOffsets.Length; i++)
-		{
-			possibleTargets.Add(new Vector2Int(x + possibleTargetsOffsets[i].x, y + possibleTargetsOffsets[i].y));
-		}
 
 		RaycastHit hit;
 		Vector3 castPoint = startpos;
@@ -245,9 +238,9 @@ public class Pawn : MonoBehaviour
 		bool checkBottomLeft = !Physics.CheckSphere(castPoint + new Vector3(-1, 0, -1), 0.1f, targettingObstacle);
 
 		// raycast check all points
-		for (int i = 0; i < possibleTargets.Count; i++)
+		for (int i = 0; i < possibleTargetsOffsets.Length; i++)
 		{
-			Vector2Int targetablePoint = possibleTargets[i];
+			Vector2Int targetablePoint = new Vector2Int(x + possibleTargetsOffsets[i].x, y + possibleTargetsOffsets[i].y);
 
 			if (!LineCastTest(castPoint, targetablePoint)) // only do these next checks if node is not accessible normally
 			{

@@ -670,16 +670,19 @@ MonoBehaviour:
   enemyRangeIndicator: {fileID: 8291533335365530796}
   playerTargettingPrefab: {fileID: 5783770734038141597, guid: 9b9eb6015b74a2d4986450f66eaeee70,
     type: 3}
-  enemyMask:
+  damagableMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1536
   friendlyMask:
     serializedVersion: 2
     m_Bits: 2048
-  indicatorMask:
+  movementMask:
     serializedVersion: 2
     m_Bits: 8192
-  curorLerpSpeed: 30
+  targetableMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  curorLerpSpeed: 22
   largeDiamondCursor: {fileID: 1939996773}
   smallDiamondCursor: {fileID: 3527457129490789435}
 --- !u!114 &105886123
@@ -702,5 +705,6 @@ MonoBehaviour:
   wind: {x: 0, y: 0}
   attackDist: 4
   targetablePoints: []
+  targetableDamageTakerPoints: []
   hp: {fileID: 0}
   pawnMesh: {fileID: 0}

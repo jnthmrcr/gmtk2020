@@ -156,12 +156,12 @@ public class PlayerMech : Pawn
 		FindTargettableNodes(transform.position, attackDist, 0, 0);
 
 		// highlight nodes that can be attacked
-		int exitindex = targetableDamageTakers.Count;
+		int exitindex = targetableDamageTakerPoints.Count;
 		for (int i = 0; i < targettingCache.Length; i++)
 		{
 			if (i < exitindex)
 			{
-				targettingCache[i].transform.position = targetableDamageTakers[i].transform.position + Vector3.up * 1.4f;
+				targettingCache[i].transform.position = targetableDamageTakerPoints[i] + Vector3.up * 1.4f;
 				targettingCache[i].SetActive(true);
 			}
 			else

@@ -7,9 +7,10 @@ public class PlayerCursor : MonoBehaviour
 {
 	[SerializeField] GameObject enemyRangeIndicator;
 	[SerializeField] GameObject playerTargettingPrefab;
-	[SerializeField] LayerMask enemyMask;
+	[SerializeField] LayerMask damagableMask;
 	[SerializeField] LayerMask friendlyMask;
-	[SerializeField] LayerMask indicatorMask;
+	[SerializeField] LayerMask movementMask;
+	[SerializeField] LayerMask targetableMask;
 	[SerializeField] float curorLerpSpeed = 20f;
 	[SerializeField] GameObject largeDiamondCursor;
 	[SerializeField] GameObject smallDiamondCursor;
@@ -39,6 +40,8 @@ public class PlayerCursor : MonoBehaviour
 		{
 			targetIndicatorCache[i] = Instantiate(playerTargettingPrefab, Vector3.zero, Quaternion.Euler(90f, 0f, 0f), transform);
 			targetIndicatorCache[i].SetActive(false);
+			targetIndicatorCache[i].layer = 0;
+			targetIndicatorCache[i].hideFlags = HideFlags.HideInHierarchy;
 		}
 
 	}
@@ -52,8 +55,13 @@ public class PlayerCursor : MonoBehaviour
 
 		bool cursorCollision = false;
 
-		Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask | enemyMask | indicatorMask);
-		if (colliders.Length > 0)
+		//Collider[] colliders = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask | damagableMask | movementMask | targetableMask);
+
+		bool hitMove = Physics.CheckSphere(goalPoint, 0.1f, movementMask);
+		bool hitAttack = Physics.CheckSphere(goalPoint, 0.1f, targetableMask);
+		Collider[] colliderPlayer = Physics.OverlapSphere(goalPoint, 0.1f, friendlyMask);
+		Collider[] colliderDamageTaker = Physics.OverlapSphere(goalPoint, 0.1f, damagableMask);
+		if (hitMove || hitAttack || colliderPlayer.Length > 0)
 		{
 			cursorCollision = true;
 			SetLargeCursor(true);
@@ -62,31 +70,37 @@ public class PlayerCursor : MonoBehaviour
 			{
 				if (Input.GetMouseButtonDown(1))
 				{ // rmb, selects mech pawns during player turn
-					if (1 << colliders[0].gameObject.layer == friendlyMask)
-						colliders[0].GetComponent<PlayerMech>().SetActivePawn();
+					if (colliderPlayer.Length > 0)
+						colliderPlayer[0].GetComponent<PlayerMech>().SetActivePawn();
 				}
 				else if (Input.GetMouseButtonDown(0))
 				{ // lmb, selects indicator/confirms action
-					if (1 << colliders[0].gameObject.layer == indicatorMask)
+
+					if (hitAttack)
+					{
+						// get the damagetaker at that position
+						DamageTaker dt = colliderDamageTaker[0].GetComponent<DamageTaker>();
+						if (dt != null)
+						{
+							dt.Damage();
+						}
+						else
+						{
+							Debug.LogError("no damagetaker on collider", colliderDamageTaker[0]);
+						}
+					}
+					else if (hitMove)
 					{
 						playerController.activeMech.Move(goalPoint);
 					}
 				}
-				// else if (gm.currentActionMode == GameManager.actionMode.attack)
-				// {
-				// 	// idk fuck, grab the gameobject at this position and get the damage sys for it?
-				// 	if (1 << colliders[0].gameObject.layer == enemyMask)
-				// 	{
-				// 		//playerController.activeMech.Attack(goalPoint);
-				// 	}
-				// }
 				else
 				{ // if we're doing nothing
-					if (1 << colliders[0].gameObject.layer == enemyMask)
-					{ // and we're over an enemy
-						enemyRangeIndicator.SetActive(true);
-						enemyRangeIndicator.transform.position = goalPoint;
-					}
+					// if (1 << colliders[0].gameObject.layer == damagableMask)
+					// { // and we're over an enemy
+					// 	enemyRangeIndicator.SetActive(true);
+					// 	enemyRangeIndicator.transform.position = goalPoint;
+					// }
 				}
 			}
 			else { }

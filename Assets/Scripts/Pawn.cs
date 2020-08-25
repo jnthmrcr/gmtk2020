@@ -17,7 +17,7 @@ public class Pawn : MonoBehaviour
 
 	public List<MapNode> navigableNodes;
 	public List<Vector3> targetablePoints;
-	public List<DamageTaker> targetableDamageTakers;
+	public List<Vector3> targetableDamageTakerPoints;
 
 	private int _hitPoints;
 	[SerializeField] protected TextMeshPro hp;
@@ -215,7 +215,7 @@ public class Pawn : MonoBehaviour
 		int y = Mathf.RoundToInt(startpos.z) + windY;
 
 		targetablePoints = new List<Vector3>();
-		targetableDamageTakers = new List<DamageTaker>();
+		targetableDamageTakerPoints = new List<Vector3>();
 
 		RaycastHit hit;
 		Vector3 castPoint = startpos;
@@ -334,7 +334,7 @@ public class Pawn : MonoBehaviour
 				DamageTaker dt = hits[0].GetComponent<DamageTaker>();
 				if (dt != null)
 				{
-					targetableDamageTakers.Add(dt);
+					targetableDamageTakerPoints.Add(dt.transform.position);
 				}
 			}
 		}

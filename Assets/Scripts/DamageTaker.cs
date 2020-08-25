@@ -25,7 +25,9 @@ public class DamageTaker : MonoBehaviour
 
 	void Die()
 	{
-		Instantiate(deathPrefab, transform.position, deathPrefab.transform.rotation);
+		if (deathPrefab != null)
+			Instantiate(deathPrefab, transform.position, deathPrefab.transform.rotation);
+
 		Destroy(gameObject);
 	}
 }

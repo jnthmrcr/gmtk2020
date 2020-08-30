@@ -49,10 +49,13 @@ public class PlayerController : MonoBehaviour
 
 	public void SetActiveMech(PlayerMech newMech)
 	{
-		if (activeMech != null)
+		if (activeMech != newMech)
 		{
-			activeMech.DeselectMech();
+			if (activeMech != null)
+			{
+				activeMech.DeselectMech();
+			}
+			activeMech = newMech;
 		}
-		activeMech = newMech;
 	}
 }

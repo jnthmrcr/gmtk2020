@@ -83,6 +83,7 @@ public class PlayerCursor : MonoBehaviour
 						if (dt != null)
 						{
 							dt.Damage();
+							StartCoroutine(waitplz());
 						}
 						else
 						{
@@ -125,6 +126,14 @@ public class PlayerCursor : MonoBehaviour
 			transform.position = Vector3.Lerp(transform.position, goalPoint + goalY * Vector3.up, Time.deltaTime * curorLerpSpeed);
 		else
 			transform.position = worldPoint + goalY * Vector3.up;
+	}
+
+	IEnumerator waitplz() // fuckin idk it only works if u wait a frame
+	{
+		yield return 0;
+		playerController.activeMech.RescanPawn();
+		playerController.activeMech.SetActivePawn();
+		yield break;
 	}
 
 	private void OnApplicationFocus(bool focus)

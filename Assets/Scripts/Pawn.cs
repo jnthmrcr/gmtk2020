@@ -97,12 +97,19 @@ public class Pawn : MonoBehaviour
 			//transform.localScale = Vector3.one * Mathf.Lerp(1f, 0.65f, progress % 1f);
 			yield return null;
 		}
-		GetPersonalMap(transform.position, moveDist);
-		FindNavigableNodes(transform.position, moveDist);
-		SetActivePawn();
+
+		RescanPawn();
 
 		performingAction = false;
 		yield break;
+	}
+
+	public void RescanPawn()
+	{
+		GetPersonalMap(transform.position, moveDist);
+		FindNavigableNodes(transform.position, moveDist);
+		FindTargettableNodes(transform.position, attackDist);
+		SetActivePawn();
 	}
 
 	public void FindNavigableNodes(Vector3 startPos, int distance)

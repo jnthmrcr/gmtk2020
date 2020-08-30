@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager self;
+
 	public enum gamePhase { environmentTurn, enemyTurn, playerTurn, noTurn }
 	public gamePhase currentTurnPhase;
+	public MainMap mainMap;
 
 	[SerializeField] PlayerController player;
+
+	private void Awake()
+	{
+		self = this;
+		mainMap = GetComponentInChildren<MainMap>();
+	}
 
 	private void Start()
 	{

@@ -109,3 +109,4 @@ MonoBehaviour:
   hitpointsStarting: 1
   hitPointsCurrent: 1
   deathPrefab: {fileID: 0}
+  prefabWalkable: 1

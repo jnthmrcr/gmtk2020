@@ -111,6 +111,7 @@ MonoBehaviour:
   hitPointsCurrent: 2
   deathPrefab: {fileID: 8666588035915738024, guid: 7c06285dc3fea524996f3bd1cf16e903,
     type: 3}
+  prefabWalkable: 0
 --- !u!1 &8657570040447374049
 GameObject:
   m_ObjectHideFlags: 0

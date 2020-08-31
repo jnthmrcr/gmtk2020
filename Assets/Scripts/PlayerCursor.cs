@@ -66,7 +66,7 @@ public class PlayerCursor : MonoBehaviour
 			cursorCollision = true;
 			SetLargeCursor(true);
 			goalY = 1f;
-			if (gm.currentTurnPhase == GameManager.gamePhase.playerTurn)
+			if (gm.currentTurnPhase == GameManager.turnPhase.player)
 			{
 				if (Input.GetMouseButtonDown(1))
 				{ // rmb, selects mech pawns during player turn

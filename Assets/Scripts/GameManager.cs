@@ -6,8 +6,9 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager self;
 
-	public enum gamePhase { environmentTurn, enemyTurn, playerTurn, noTurn }
-	public gamePhase currentTurnPhase;
+	public enum turnPhase { environment, enemy, player, none }
+	public turnPhase currentTurnPhase;
+	public int currentTurn;
 	public MainMap mainMap;
 
 	[SerializeField] PlayerController player;
@@ -25,43 +26,44 @@ public class GameManager : MonoBehaviour
 
 	void BeginGame()
 	{
-		currentTurnPhase = gamePhase.environmentTurn;
-		NextTurn();
+		currentTurnPhase = turnPhase.environment;
+		NextPhase();
 	}
 
-	void NextTurn()
+	void NextPhase()
 	{
 		switch (currentTurnPhase)
 		{
-			case gamePhase.environmentTurn:
-				currentTurnPhase = gamePhase.playerTurn;
-				TurnAction(currentTurnPhase);
+			case turnPhase.environment:
+				currentTurnPhase = turnPhase.player;
+				PhaseAction(currentTurnPhase);
 				break;
-			case gamePhase.playerTurn:
-				currentTurnPhase = gamePhase.enemyTurn;
-				TurnAction(currentTurnPhase);
+			case turnPhase.player:
+				currentTurnPhase = turnPhase.enemy;
+				PhaseAction(currentTurnPhase);
 				break;
-			case gamePhase.enemyTurn:
-				currentTurnPhase = gamePhase.playerTurn;
-				TurnAction(currentTurnPhase);
+			case turnPhase.enemy:
+				currentTurnPhase = turnPhase.player;
+				PhaseAction(currentTurnPhase);
 				break;
 			default:
 				break;
 		}
 	}
 
-	void TurnAction(gamePhase phase)
+	void PhaseAction(turnPhase phase)
 	{
 		switch (phase)
 		{
-			case gamePhase.environmentTurn:
+			case turnPhase.environment:
+				currentTurn++; // iterate
 				break;
-			case gamePhase.enemyTurn:
+			case turnPhase.enemy:
 				break;
-			case gamePhase.playerTurn:
+			case turnPhase.player:
 				player.SetPhaseActive(true);
 				break;
-			case gamePhase.noTurn:
+			case turnPhase.none:
 				break;
 			default:
 				break;

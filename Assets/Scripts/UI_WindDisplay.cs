@@ -44,6 +44,6 @@ public class UI_WindDisplay : MonoBehaviour
 
 		connectorLine.transform.localScale = new Vector3(Vector2.Distance(Vector2.zero, new Vector2(x, y)), 1, 1);
 		connectorLine.anchoredPosition = myTrans.anchoredPosition + new Vector2(x * 10f, y * 10f);
-		connectorLine.localRotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Acos((float) x / (float) y));
+		connectorLine.rotation = Quaternion.LookRotation(new Vector3(x, 0, y), Vector3.up) * Quaternion.Euler(90, 90, 0); //Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Acos((float) x / (float) y));
 	}
 }

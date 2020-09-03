@@ -10,7 +10,7 @@ public class UI_WindDisplay : MonoBehaviour
 
 	RectTransform myTrans;
 
-	private void Start()
+	private void Awake()
 	{
 		myTrans = GetComponent<RectTransform>();
 	}

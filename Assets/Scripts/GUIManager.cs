@@ -12,6 +12,13 @@ public class GUIManager : MonoBehaviour
 	[SerializeField] GameObject menuBG;
 	[SerializeField] Text startText;
 
+	[SerializeField] GameObject forecastParent;
+	[SerializeField] UI_ForecastItem[] forecastItems;
+
+	[SerializeField] Text turnText;
+	[SerializeField] Text actionText;
+	[SerializeField] UI_WindDisplay windDisplay;
+
 	bool gamestarted = false;
 	bool inmenu = false;
 	bool inhowto = false;
@@ -47,16 +54,6 @@ public class GUIManager : MonoBehaviour
 				}
 			}
 		}
-	}
-
-	public void BtnAttack()
-	{
-		//gameManager.SetUserMode(GameManager.actionMode.attack);
-	}
-
-	public void BtnMove()
-	{
-		//gameManager.SetUserMode(GameManager.actionMode.move);
 	}
 
 	public void BtnForcast()

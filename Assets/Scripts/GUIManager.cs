@@ -15,6 +15,9 @@ public class GUIManager : MonoBehaviour
 	[SerializeField] GameObject forecastParent;
 	[SerializeField] UI_ForecastItem[] forecastItems;
 
+	[SerializeField] UI_WindDisplay[] forecastWindItems;
+	[SerializeField] Text[] forecastMoveItems;
+
 	[SerializeField] Text turnText;
 	[SerializeField] Text actionText;
 	[SerializeField] UI_WindDisplay windDisplay;
@@ -56,16 +59,39 @@ public class GUIManager : MonoBehaviour
 		}
 	}
 
+	public void FillForecast(int[] move, Vector2Int[] wind)
+	{
+		// set current info
+		turnText.text = gameManager.currentTurn.ToString();
+		actionText.text = move[0].ToString();
+		windDisplay.SetDisplay(wind[0]);
+
+		// set forecast screen
+		for (int i = 0; i < forecastItems.Length; i++)
+		{
+			forecastItems[i].SetDisplay(gameManager.currentTurn + i + 1, move[i + 1], wind[i + 1]);
+			//forecastMoveItems[i].text = move[i].ToString();
+		}
+
+		for (int i = 0; i < forecastWindItems.Length; i++)
+		{
+			forecastWindItems[i].SetDisplay(wind[i]);
+			forecastMoveItems[i].text = move[i].ToString();
+		}
+	}
+
 	public void BtnForcast()
 	{
 		inforcast = true;
 		menuBG.SetActive(true);
+		forecastParent.SetActive(true);
 	}
 
 	public void exitForcast()
 	{
 		inforcast = false;
 		menuBG.SetActive(false);
+		forecastParent.SetActive(false);
 	}
 
 	public void BtnMenu()

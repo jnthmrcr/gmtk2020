@@ -15,6 +15,12 @@ public class UI_WindDisplay : MonoBehaviour
 		myTrans = GetComponent<RectTransform>();
 	}
 
+	public void SetDisplay(Vector2Int wind)
+	{
+		SetDisplay(wind.x, wind.y);
+		//SetDisplay(0, -4);
+	}
+
 	public void SetDisplay(int x, int y)
 	{
 		nodeSmall[0].anchoredPosition = Vector2Int.zero;

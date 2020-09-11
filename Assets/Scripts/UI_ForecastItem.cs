@@ -14,9 +14,9 @@ public class UI_ForecastItem : MonoBehaviour
 		windDisplay = GetComponentInChildren<UI_WindDisplay>();
 	}
 
-	private void Start()
+	public void SetDisplay(int turnCount, int actionCount, Vector2Int wind)
 	{
-		SetDisplay(2, 2, 2, 2);
+		SetDisplay(turnCount, actionCount, wind.x, wind.y);
 	}
 
 	public void SetDisplay(int turnCount, int actionCount, int windX, int windY)

@@ -130,7 +130,7 @@ public class PlayerCursor : MonoBehaviour
 
 	IEnumerator waitplz() // fuckin idk it only works if u wait a frame
 	{
-		yield return 0;
+		yield return new WaitForFixedUpdate();
 		playerController.activeMech.RescanPawn();
 		playerController.activeMech.SetActivePawn();
 		yield break;

@@ -42,10 +42,10 @@ MonoBehaviour:
     m_Value: 1
   dirtTexture:
     m_OverrideState: 1
-    m_Value: {fileID: 2800000, guid: 86c1f28cb6ea104458fdfc1233d7dd0d, type: 3}
+    m_Value: {fileID: 2800000, guid: 1c69c9980c3528541a13efe56ae0ca32, type: 3}
   dirtIntensity:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 20
     min: 0
 --- !u!114 &-3640961318107827818
 MonoBehaviour:

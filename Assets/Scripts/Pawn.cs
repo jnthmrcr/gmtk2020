@@ -147,24 +147,6 @@ public class Pawn : MonoBehaviour
 		}
 	}
 
-	int GetDistance(MapNode nodeA, MapNode nodeB)
-	{
-		int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-		int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
-
-		if (dstX > dstY)
-			return 2 * dstY + (dstX - dstY);
-		return 2 * dstX + (dstY - dstX);
-	}
-
-	int GetDistance(Vector3 a, Vector3 b)
-	{
-		int distX = (int) Mathf.Abs(a.x - b.x);
-		int distY = (int) Mathf.Abs(a.z - b.z);
-
-		return distX + distY;
-	}
-
 	void CheckNeighbor(ref List<MapNode> nodelist, MapNode node, int offX, int offY, int cost)
 	{
 		// get personal grid coordiantes of neighbor
@@ -188,6 +170,24 @@ public class Pawn : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	int GetDistance(MapNode nodeA, MapNode nodeB)
+	{
+		int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+		int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+
+		if (dstX > dstY)
+			return 2 * dstY + (dstX - dstY);
+		return 2 * dstX + (dstY - dstX);
+	}
+
+	int GetDistance(Vector3 a, Vector3 b)
+	{
+		int distX = (int) Mathf.Abs(a.x - b.x);
+		int distY = (int) Mathf.Abs(a.z - b.z);
+
+		return distX + distY;
 	}
 
 	/// <summary> caches possibleTargetsOffsets for use in FindTargetableNodes</summary>

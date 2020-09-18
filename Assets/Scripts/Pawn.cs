@@ -72,9 +72,7 @@ public class Pawn : MonoBehaviour
 			nodePath[i] = targetNode.worldPosition;
 			//Debug.DrawLine(targetNode.worldPosition, targetNode.parent.worldPosition, Color.cyan, 3f);
 			targetNode = targetNode.parent; // go up the chain
-			print("hi");
 		}
-		print(nodePath);
 		StartCoroutine(MoveSequence(nodePath, worldPosition));
 	}
 
@@ -97,6 +95,10 @@ public class Pawn : MonoBehaviour
 			//transform.localScale = Vector3.one * Mathf.Lerp(1f, 0.65f, progress % 1f);
 			yield return null;
 		}
+
+		// rescan starting and ending nodes
+		mainMap.RescanNodeAtPoint(transform.position);
+		mainMap.RescanNodeAtPoint(path[path.Length - 1]);
 
 		RescanPawn();
 
@@ -173,7 +175,7 @@ public class Pawn : MonoBehaviour
 
 		if (x >= 0 && x < personalMap.sizeX && y >= 0 && y < personalMap.sizeY) // is it actually in the grid
 		{
-			if (neighbor.walkable) // is it walkable
+			if (neighbor.walkable && neighbor.pawnOnNode == MapNode.pawnType.none) // is it walkable
 			{
 				if (neighbor.cost > cost) // is it the shortest path to this node
 				{

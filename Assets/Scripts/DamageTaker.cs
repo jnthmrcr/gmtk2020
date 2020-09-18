@@ -7,7 +7,6 @@ public class DamageTaker : MonoBehaviour
 	[SerializeField] int hitpointsStarting;
 	[SerializeField] int hitPointsCurrent;
 	[SerializeField] GameObject deathPrefab;
-	[SerializeField] bool prefabWalkable;
 
 	private void Start()
 	{
@@ -28,11 +27,8 @@ public class DamageTaker : MonoBehaviour
 	{
 		if (deathPrefab != null)
 			Instantiate(deathPrefab, transform.position, deathPrefab.transform.rotation);
-		else
-		{
-			GameManager.self.mainMap.grid.NodeFromWorldPosition(transform.position, Vector3.zero).walkable = prefabWalkable;
-		}
-		Destroy(gameObject);
 
+		GameManager.self.mainMap.RescanNodeAtPointAfterWait(transform.position);
+		Destroy(gameObject);
 	}
 }

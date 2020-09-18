@@ -34,7 +34,7 @@ public class MapGrid
 			for (int y = 0; y < sizeY; y++)
 			{
 				MapNode subMapNode = nodes[minX + x, minY + y];
-				MapNode newNode = new MapNode(subMapNode.walkable, subMapNode.worldPosition, x, y); // copy values, not reference
+				MapNode newNode = new MapNode(subMapNode.walkable, subMapNode.worldPosition, x, y, subMapNode.pawnOnNode); // copy values, not reference
 				//MapNode newNode = new MapNode(subMapNode); // copy values, not reference
 
 				submap.nodes[x, y] = newNode;

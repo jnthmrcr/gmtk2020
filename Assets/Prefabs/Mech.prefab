@@ -552,7 +552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609da492d8c98d4489d748b04529471a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMap: {fileID: 0}
   targettingObstacle:
     serializedVersion: 2
     m_Bits: 3584
@@ -560,7 +559,7 @@ MonoBehaviour:
   wind: {x: 0, y: 0}
   attackDist: 4
   targetablePoints: []
-  targetableDamageTakers: []
+  targetableDamageTakerPoints: []
   hp: {fileID: 706235372091533831}
   pawnMesh: {fileID: 706235373114515344}
   player: {fileID: 0}

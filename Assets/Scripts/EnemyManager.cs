@@ -23,8 +23,15 @@ public class EnemyManager : MonoBehaviour
 
 	public void SetPhaseActive()
 	{
-		// aw shizzle here we go
-		// basically one long sequence
+		// clean and init enemypawns list
+		for (int i = enemyPawns.Count - 1; i >= 0; i--)
+		{
+			if (enemyPawns[i] == null)
+				enemyPawns.RemoveAt(i);
+			else
+				enemyPawns[i].PhaseInit(0, 0);
+		}
+
 		// generate a flowfield (pathfinding)
 		Vector2Int[] startPoints = new Vector2Int[playerController.myMechs.Count];
 		for (int i = 0; i < startPoints.Length; i++)
@@ -40,11 +47,6 @@ public class EnemyManager : MonoBehaviour
 
 		fieldGenerator.GenerateField(startPoints, endPoints);
 
-		//StartCoroutine(EnemyPhaseSequence());
-		foreach (Pawn p in enemyPawns)
-		{
-			p.PhaseInit(0, 0);
-		}
 		EnemyPhaseSequence();
 	}
 

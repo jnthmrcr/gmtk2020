@@ -11,6 +11,8 @@ public class EnemyManager : MonoBehaviour
 	[SerializeField] List<Pawn> enemyPawns;
 	[SerializeField] List<Pawn> enemiesToMove;
 
+	int r;
+
 	private void Awake()
 	{
 		fieldGenerator = GetComponent<FlowFieldGenerator>();
@@ -39,6 +41,10 @@ public class EnemyManager : MonoBehaviour
 		fieldGenerator.GenerateField(startPoints, endPoints);
 
 		//StartCoroutine(EnemyPhaseSequence());
+		foreach (Pawn p in enemyPawns)
+		{
+			p.PhaseInit(0, 0);
+		}
 		EnemyPhaseSequence();
 	}
 
@@ -52,31 +58,57 @@ public class EnemyManager : MonoBehaviour
 		Pawn activePawn;
 		enemiesToMove.AddRange(enemyPawns);
 
-		int r = Random.Range(0, enemiesToMove.Count);
+		r = Random.Range(0, enemiesToMove.Count);
 		activePawn = enemiesToMove[r];
 		enemiesToMove.RemoveAt(r);
 
-		MapNode enemyNode = fieldGenerator.PersonalMap.NodeFromWorldPosition(activePawn.transform.position, Vector3.zero);
-		int costGoal = enemyNode.cost - activePawn.MoveDist;
+		// check to see if we have any targetable pawns
+		// if not, move closer
+		if (activePawn.targetableDamageTakerPoints.Count > 0)
+			EnemyPawnAttack(activePawn);
+		else
+			EnemyPawnMovement(activePawn);
+	}
+
+	void EnemyPawnAttack(Pawn pawn)
+	{
+		Collider[] colliderDamageTaker;
+		Pawn damagablePawn;
+		foreach (Vector3 p in pawn.targetableDamageTakerPoints)
+		{
+			colliderDamageTaker = Physics.OverlapSphere(p, 0.1f);
+			damagablePawn = colliderDamageTaker[0].GetComponent<Pawn>();
+			if (damagablePawn != null)
+			{
+				colliderDamageTaker[0].GetComponent<DamageTaker>().Damage();
+				break;
+			}
+		}
+	}
+
+	void EnemyPawnMovement(Pawn pawn)
+	{
+		MapNode enemyNode = fieldGenerator.PersonalMap.NodeFromWorldPosition(pawn.transform.position, Vector3.zero);
+		int costGoal = enemyNode.cost - pawn.MoveDist;
 		// get the nodes close to me, within activepawnmovement
 		// reuse target offset code from pawn.cs
 		List<MapNode> nodesCloseToEnemy = new List<MapNode>();
 
-		int x = -activePawn.MoveDist;
+		int x = -pawn.MoveDist;
 		int y = 0;
 
 		// get all the points
-		for (int i = 0; i <= activePawn.MoveDist; i++) // x
+		for (int i = 0; i <= pawn.MoveDist; i++) // x
 		{
 			int numPoints = i * 2 + 1;
 			for (int j = 0; j < numPoints; j++) // y
 			{
 				//possibleTargetsOffsets[index] = new Vector2Int(x, y + j);
 				nodesCloseToEnemy.Add(fieldGenerator.PersonalMap.NodeFromWorldPosition(new Vector3(x + enemyNode.worldPosition.x, 0, y + j + enemyNode.worldPosition.z), Vector3.zero));
-				if (i != activePawn.MoveDist) // if we are not at center
+				if (i != pawn.MoveDist) // if we are not at center
 				{
 					//possibleTargetsOffsets[index] = new Vector2Int(x + ((activePawn.AttackDist - i) * 2), y + j);
-					nodesCloseToEnemy.Add(fieldGenerator.PersonalMap.NodeFromWorldPosition(new Vector3(x + ((activePawn.MoveDist - i) * 2) + enemyNode.worldPosition.x, 0, y + j + enemyNode.worldPosition.z), Vector3.zero));
+					nodesCloseToEnemy.Add(fieldGenerator.PersonalMap.NodeFromWorldPosition(new Vector3(x + ((pawn.MoveDist - i) * 2) + enemyNode.worldPosition.x, 0, y + j + enemyNode.worldPosition.z), Vector3.zero));
 				}
 			}
 			y--; // start one tile lower every tile
@@ -107,9 +139,8 @@ public class EnemyManager : MonoBehaviour
 		r = Random.Range(0, goalNodes.Count);
 
 		// move there
-		activePawn.PhaseInit(0, 0);
-		print(enemyNode.cost.ToString() + " " + nearestCost.ToString());
-		activePawn.Move(goalNodes[r].worldPosition);
+		print(enemyNode.cost.ToString() + " " + nearestCost.ToString() + " " + (enemyNode.cost - nearestCost).ToString());
+		pawn.Move(goalNodes[r].worldPosition);
 		//Debug.DrawLine(goalNodes[r].worldPosition, goalNodes[r].worldPosition + Vector3.up, Color.green, 10f);
 	}
 }

@@ -54,7 +54,7 @@ public class PlayerMech : Pawn
 		//Gizmos.DrawWireCube(transform.position, new Vector3(personalMap.sizeX, 1, personalMap.sizeY));
 
 		Gizmos.color = Color.cyan;
-		MapNode startNode = mainMap.grid.NodeFromWorldPosition(transform.position, Vector3.zero);
+		MapNode startNode = GameManager.self.mainMap.grid.NodeFromWorldPosition(transform.position, Vector3.zero);
 		//print(startNode.gridX + ", " + startNode.gridY);
 
 		Gizmos.DrawCube(startNode.worldPosition, Vector3.one);

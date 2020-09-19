@@ -5,44 +5,31 @@ using UnityEngine;
 public class FlowFieldGenerator : MonoBehaviour
 {
 	[SerializeField] MainMap mainMap;
-	MapGrid personalMap;
+	MapGrid _personalMap;
+	public MapGrid PersonalMap
+	{
+		get => _personalMap;
+		private set => _personalMap = value;
+	}
 
 	public List<MapNode> flowNodes = new List<MapNode>();
 
 	[SerializeField] Transform[] startTransforms, endTransforms;
 
-	private void Start()
-	{
-		Vector2Int[] startPoints = new Vector2Int[startTransforms.Length];
-		for (int i = 0; i < startPoints.Length; i++)
-		{
-			startPoints[i] = startTransforms[i].position.toV2i();
-		}
-
-		Vector2Int[] endPoints = new Vector2Int[endTransforms.Length];
-		for (int i = 0; i < endPoints.Length; i++)
-		{
-			endPoints[i] = endTransforms[i].position.toV2i();
-		}
-
-		GenerateField(startPoints, endPoints);
-		print(flowNodes.Count);
-	}
-
 	public void GenerateField(Vector2Int[] startPoints, Vector2Int[] endPoints)
 	{
-		personalMap = mainMap.grid.GetSubMap(mainMap.grid.sizeX, mainMap.grid.sizeY, mainMap.grid.minX, mainMap.grid.minY, mainMap.grid);
+		PersonalMap = mainMap.grid.GetSubMap(mainMap.grid.sizeX, mainMap.grid.sizeY, mainMap.grid.minX, mainMap.grid.minY, mainMap.grid);
 
 		MapNode[] startNodes = new MapNode[startPoints.Length];
 		for (int i = 0; i < startNodes.Length; i++)
 		{
-			startNodes[i] = personalMap.NodeFromWorldPosition(startPoints[i].toV3(), Vector3.zero);
+			startNodes[i] = PersonalMap.NodeFromWorldPosition(startPoints[i].toV3(), Vector3.zero);
 		}
 
 		List<MapNode> endNodes = new List<MapNode>();
 		for (int i = 0; i < endPoints.Length; i++)
 		{
-			endNodes.Add(personalMap.NodeFromWorldPosition(endPoints[i].toV3(), Vector3.zero));
+			endNodes.Add(PersonalMap.NodeFromWorldPosition(endPoints[i].toV3(), Vector3.zero));
 		}
 
 		flowNodes = new List<MapNode>();
@@ -75,10 +62,9 @@ public class FlowFieldGenerator : MonoBehaviour
 			int x = node.gridX + offX;
 			int y = node.gridY + offY;
 
-			print(x.ToString() + ' ' + y.ToString());
-			MapNode neighbor = personalMap.nodes[Mathf.Clamp(x, 0, personalMap.sizeX - 1), Mathf.Clamp(y, 0, personalMap.sizeY - 1)];
+			MapNode neighbor = PersonalMap.nodes[Mathf.Clamp(x, 0, PersonalMap.sizeX - 1), Mathf.Clamp(y, 0, PersonalMap.sizeY - 1)];
 
-			if (x >= 0 && x < personalMap.sizeX && y >= 0 && y < personalMap.sizeY) // is it actually in the grid
+			if (x >= 0 && x < PersonalMap.sizeX && y >= 0 && y < PersonalMap.sizeY) // is it actually in the grid
 			{
 				if (neighbor.walkable) // is it walkable
 				{
@@ -88,12 +74,14 @@ public class FlowFieldGenerator : MonoBehaviour
 						neighbor.parent = node;
 						neighbor.cost = cost;
 
-						neighbors.Add(neighbor);
+						if (neighbor.pawnOnNode == MapNode.pawnType.none)
+						{
+							neighbors.Add(neighbor);
+						}
 						flowNodes.Add(neighbor);
 						endNodes.Remove(neighbor); // plz no break
 					}
 				}
-				//}
 			}
 		}
 	}

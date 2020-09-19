@@ -8,12 +8,14 @@ public class Pawn : MonoBehaviour
 {
 	// controlled either by player or cpu
 
-	public MainMap mainMap;
 	public MapGrid personalMap;
 	[SerializeField] protected LayerMask targettingObstacle;
 	[SerializeField] protected int moveDist = 4;
+	public int MoveDist { get => moveDist; }
+
 	[SerializeField] protected Vector2Int wind;
 	[SerializeField] protected int attackDist = 4;
+	public int AttackDist { get => attackDist; }
 
 	public List<MapNode> navigableNodes;
 	public List<Vector3> targetablePoints;
@@ -50,20 +52,28 @@ public class Pawn : MonoBehaviour
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
 	{
-		MapNode startNode = mainMap.grid.NodeFromWorldPosition(startPos + new Vector3(-distance, 0, -distance), Vector3.zero);
-		personalMap = mainMap.grid.GetSubMap(
+		MapNode startNode = GameManager.self.mainMap.grid.NodeFromWorldPosition(startPos + new Vector3(-distance, 0, -distance), Vector3.zero);
+		personalMap = GameManager.self.mainMap.grid.GetSubMap(
 			distance * 2 + 1,
 			distance * 2 + 1,
 			startNode.gridX,
 			startNode.gridY,
-			mainMap.grid);
+			GameManager.self.mainMap.grid);
+		//personalMap = new MapGrid(distance);
 	}
 
-	public void Move(Vector3 worldPosition)
+	public void Move(Vector3 worldPosition, int cost = -1, MapGrid mapGrid = null, bool lowToHigh = true)
 	{
 		performingAction = true;
-		MapNode targetNode = personalMap.NodeFromWorldPosition(worldPosition, transform.position);
-		int pathLength = targetNode.cost + 1;
+
+		MapNode targetNode;
+		if (mapGrid == null)
+			targetNode = personalMap.NodeFromWorldPosition(worldPosition, Vector3.zero);
+		else
+			targetNode = mapGrid.NodeFromWorldPosition(worldPosition, Vector3.zero);
+
+		int pathLength = (cost == -1) ? targetNode.cost + 1 : cost;
+
 		//print(worldPosition + " " + targetNode.worldPosition);
 		Vector3[] nodePath = new Vector3[pathLength];
 		// get a path
@@ -97,8 +107,8 @@ public class Pawn : MonoBehaviour
 		}
 
 		// rescan starting and ending nodes
-		mainMap.RescanNodeAtPoint(transform.position);
-		mainMap.RescanNodeAtPoint(path[path.Length - 1]);
+		GameManager.self.mainMap.RescanNodeAtPoint(transform.position);
+		GameManager.self.mainMap.RescanNodeAtPoint(path[path.Length - 1]);
 
 		RescanPawn();
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	[SerializeField] PlayerCursor myCursor;
-	[SerializeField] List<PlayerMech> myMechs;
+	public List<PlayerMech> myMechs;
 	public PlayerMech activeMech;
 
 	[SerializeField] AnimationCurve indicatorwave1;

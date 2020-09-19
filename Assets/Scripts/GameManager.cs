@@ -9,14 +9,16 @@ public class GameManager : MonoBehaviour
 	public enum turnPhase { environment, enemy, player, none }
 	public turnPhase currentTurnPhase;
 	public int currentTurn;
-	public MainMap mainMap;
-
-	[SerializeField] PlayerController player;
+	[HideInInspector] public MainMap mainMap;
+	PlayerController player;
+	EnemyManager enemyManager;
 
 	private void Awake()
 	{
 		self = this;
 		mainMap = GetComponentInChildren<MainMap>();
+		player = GetComponent<PlayerController>();
+		enemyManager = GetComponent<EnemyManager>();
 	}
 
 	private void Start()
@@ -51,6 +53,15 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	public void EndPlayerPhase()
+	{
+		if (currentTurnPhase == turnPhase.player)
+		{
+			currentTurnPhase = turnPhase.enemy;
+			PhaseAction(currentTurnPhase);
+		}
+	}
+
 	void PhaseAction(turnPhase phase)
 	{
 		switch (phase)
@@ -59,6 +70,7 @@ public class GameManager : MonoBehaviour
 				currentTurn++; // iterate
 				break;
 			case turnPhase.enemy:
+				enemyManager.SetPhaseActive();
 				break;
 			case turnPhase.player:
 				player.SetPhaseActive(true);

@@ -112,7 +112,6 @@ MonoBehaviour:
   hitPointsCurrent: 2
   deathPrefab: {fileID: 8666588035915738024, guid: 7c06285dc3fea524996f3bd1cf16e903,
     type: 3}
-  prefabWalkable: 0
 --- !u!114 &1860247790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,10 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7ccf8b9ffbf5543af49d1aa22717db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMap: {fileID: 0}
   targettingObstacle:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   moveDist: 4
   wind: {x: 0, y: 0}
   attackDist: 3

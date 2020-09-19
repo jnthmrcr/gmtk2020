@@ -59,20 +59,16 @@ public class Pawn : MonoBehaviour
 			startNode.gridX,
 			startNode.gridY,
 			GameManager.self.mainMap.grid);
-		//personalMap = new MapGrid(distance);
 	}
 
-	public void Move(Vector3 worldPosition, int cost = -1, MapGrid mapGrid = null, bool lowToHigh = true)
+	public void Move(Vector3 worldPosition)
 	{
 		performingAction = true;
 
 		MapNode targetNode;
-		if (mapGrid == null)
-			targetNode = personalMap.NodeFromWorldPosition(worldPosition, Vector3.zero);
-		else
-			targetNode = mapGrid.NodeFromWorldPosition(worldPosition, Vector3.zero);
+		targetNode = personalMap.NodeFromWorldPosition(worldPosition, transform.position);
 
-		int pathLength = (cost == -1) ? targetNode.cost + 1 : cost;
+		int pathLength = targetNode.cost + 1;
 
 		//print(worldPosition + " " + targetNode.worldPosition);
 		Vector3[] nodePath = new Vector3[pathLength];

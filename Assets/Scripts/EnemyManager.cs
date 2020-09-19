@@ -88,7 +88,7 @@ public class EnemyManager : MonoBehaviour
 		int nearestCost = 999;
 		foreach (MapNode n in nodesCloseToEnemy)
 		{
-			Debug.DrawLine(n.worldPosition, n.worldPosition + Vector3.up, Color.magenta, 10f);
+			//Debug.DrawLine(n.worldPosition, n.worldPosition + Vector3.up, Color.magenta, 10f);
 
 			if (n.cost < nearestCost)
 			{
@@ -107,10 +107,9 @@ public class EnemyManager : MonoBehaviour
 		r = Random.Range(0, goalNodes.Count);
 
 		// move there
-		activePawn.GetPersonalMap(activePawn.transform.position, activePawn.MoveDist);
+		activePawn.PhaseInit(0, 0);
 		print(enemyNode.cost.ToString() + " " + nearestCost.ToString());
-		activePawn.Move(goalNodes[r].worldPosition, enemyNode.cost - nearestCost, fieldGenerator.PersonalMap, false);
-
-		//yield return null;
+		activePawn.Move(goalNodes[r].worldPosition);
+		//Debug.DrawLine(goalNodes[r].worldPosition, goalNodes[r].worldPosition + Vector3.up, Color.green, 10f);
 	}
 }

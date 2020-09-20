@@ -13,6 +13,9 @@ public class EnemyManager : MonoBehaviour
 
 	int r;
 
+	int actionCounter = 0;
+	Pawn activePawn;
+
 	private void Awake()
 	{
 		fieldGenerator = GetComponent<FlowFieldGenerator>();
@@ -32,6 +35,9 @@ public class EnemyManager : MonoBehaviour
 				enemyPawns[i].PhaseInit(0, 0);
 		}
 
+		enemiesToMove.Clear();
+		enemiesToMove.AddRange(enemyPawns);
+
 		// generate a flowfield (pathfinding)
 		Vector2Int[] startPoints = new Vector2Int[playerController.myMechs.Count];
 		for (int i = 0; i < startPoints.Length; i++)
@@ -47,23 +53,39 @@ public class EnemyManager : MonoBehaviour
 
 		fieldGenerator.GenerateField(startPoints, endPoints);
 
+		GetNewActivePawn();
 		EnemyPhaseSequence();
 	}
 
-	void EnemyPhaseSequence()
+	void GetNewActivePawn()
+	{
+		if (enemiesToMove.Count <= 0)
+		{
+			// we're done
+			GameManager.self.NextPhase();
+		}
+		else
+		{
+			r = Random.Range(0, enemiesToMove.Count);
+			activePawn = enemiesToMove[r];
+			enemiesToMove.RemoveAt(r);
+		}
+	}
+
+	public void EnemyPhaseSequence()
 	{
 		// choose a random enemy to move
 		// look at flowfield, choose a place to move
 		// if close enough to playerpawn, attack
 		// choose next random enemy
 		// idk
-		Pawn activePawn;
-		enemiesToMove.Clear();
-		enemiesToMove.AddRange(enemyPawns);
 
-		r = Random.Range(0, enemiesToMove.Count);
-		activePawn = enemiesToMove[r];
-		enemiesToMove.RemoveAt(r);
+		actionCounter++;
+		if (actionCounter > 2)
+		{
+			actionCounter = 0;
+			GetNewActivePawn();
+		}
 
 		// check to see if we have any targetable pawns
 		// if not, move closer
@@ -84,6 +106,7 @@ public class EnemyManager : MonoBehaviour
 			if (damagablePawn != null)
 			{
 				colliderDamageTaker[0].GetComponent<DamageTaker>().Damage();
+				GameManager.self.PawnActionFinished();
 				break;
 			}
 		}

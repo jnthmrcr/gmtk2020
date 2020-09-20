@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 		NextPhase();
 	}
 
-	void NextPhase()
+	public void NextPhase()
 	{
 		switch (currentTurnPhase)
 		{
@@ -71,6 +71,26 @@ public class GameManager : MonoBehaviour
 				break;
 			case turnPhase.enemy:
 				enemyManager.SetPhaseActive();
+				break;
+			case turnPhase.player:
+				player.SetPhaseActive(true);
+				break;
+			case turnPhase.none:
+				break;
+			default:
+				break;
+		}
+	}
+
+	public void PawnActionFinished()
+	{
+		switch (currentTurnPhase)
+		{
+			case turnPhase.environment:
+				currentTurn++; // iterate
+				break;
+			case turnPhase.enemy:
+				enemyManager.EnemyPhaseSequence();
 				break;
 			case turnPhase.player:
 				player.SetPhaseActive(true);

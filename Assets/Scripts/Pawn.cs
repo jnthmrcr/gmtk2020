@@ -109,6 +109,8 @@ public class Pawn : MonoBehaviour
 		RescanPawn();
 
 		performingAction = false;
+
+		GameManager.self.PawnActionFinished();
 		yield break;
 	}
 

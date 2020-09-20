@@ -14,8 +14,6 @@ public class FlowFieldGenerator : MonoBehaviour
 
 	public List<MapNode> flowNodes = new List<MapNode>();
 
-	[SerializeField] Transform[] startTransforms, endTransforms;
-
 	public void GenerateField(Vector2Int[] startPoints, Vector2Int[] endPoints)
 	{
 		PersonalMap = mainMap.grid.GetSubMap(mainMap.grid.sizeX, mainMap.grid.sizeY, mainMap.grid.minX, mainMap.grid.minY, mainMap.grid);

@@ -58,6 +58,7 @@ public class EnemyManager : MonoBehaviour
 		// choose next random enemy
 		// idk
 		Pawn activePawn;
+		enemiesToMove.Clear();
 		enemiesToMove.AddRange(enemyPawns);
 
 		r = Random.Range(0, enemiesToMove.Count);

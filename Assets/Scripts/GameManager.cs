@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public MainMap mainMap;
 	PlayerController player;
 	EnemyManager enemyManager;
+	WeatherController weather;
 
 	private void Awake()
 	{
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
 		mainMap = GetComponentInChildren<MainMap>();
 		player = GetComponent<PlayerController>();
 		enemyManager = GetComponent<EnemyManager>();
+		weather = GetComponent<WeatherController>();
 	}
 
 	private void Start()
@@ -29,7 +31,7 @@ public class GameManager : MonoBehaviour
 	void BeginGame()
 	{
 		currentTurnPhase = turnPhase.environment;
-		NextPhase();
+		PhaseAction(currentTurnPhase);
 	}
 
 	public void NextPhase()
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
 				PhaseAction(currentTurnPhase);
 				break;
 			case turnPhase.enemy:
-				currentTurnPhase = turnPhase.player;
+				currentTurnPhase = turnPhase.environment;
 				PhaseAction(currentTurnPhase);
 				break;
 			default:
@@ -67,7 +69,13 @@ public class GameManager : MonoBehaviour
 		switch (phase)
 		{
 			case turnPhase.environment:
+				// get new action count
+				// update UI
 				currentTurn++; // iterate
+
+				weather.NextForecast();
+
+				NextPhase();
 				break;
 			case turnPhase.enemy:
 				enemyManager.SetPhaseActive();

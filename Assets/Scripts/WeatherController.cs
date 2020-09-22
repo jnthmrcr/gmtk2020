@@ -17,22 +17,6 @@ public class WeatherController : MonoBehaviour
 	public List<int> moveForecast;
 	public List<Vector2Int> windForecast;
 
-	private void Start()
-	{
-		for (int i = 0; i < 25; i++)
-		{
-			CreateWindForcast();
-		}
-
-		while (moveForecast.Count < forecastLength)
-		{
-			CreateMoveForecast();
-		}
-
-		//moveForecast.RemoveAt(0);
-		guiManager.FillForecast(moveForecast.ToArray(), windForecast.ToArray());
-	}
-
 	void CreateMoveForecast()
 	{
 		int startingIndex = moveForecast.Count;
@@ -85,5 +69,29 @@ public class WeatherController : MonoBehaviour
 		windForecast.Add(new Vector2Int(x, y));
 
 		//Random.insideUnitCircle();
+	}
+
+	void FillForecasts()
+	{
+		while (moveForecast.Count <= forecastLength)
+		{
+			CreateMoveForecast();
+		}
+
+		while (windForecast.Count <= forecastLength)
+		{
+			CreateWindForcast();
+		}
+	}
+
+	public void NextForecast()
+	{
+		if (moveForecast.Count > 0)
+		{
+			moveForecast.RemoveAt(0);
+			windForecast.RemoveAt(0);
+		}
+		FillForecasts();
+		guiManager.FillForecast(moveForecast.ToArray(), windForecast.ToArray());
 	}
 }

@@ -15,6 +15,8 @@ public class DamageTaker : MonoBehaviour
 
 	public void Damage(int points = 1)
 	{
+		GameManager.self.PawnActionFinished();
+
 		hitPointsCurrent -= points;
 		if (hitPointsCurrent <= 0)
 		{

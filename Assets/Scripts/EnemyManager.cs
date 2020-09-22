@@ -106,7 +106,6 @@ public class EnemyManager : MonoBehaviour
 			if (damagablePawn != null)
 			{
 				colliderDamageTaker[0].GetComponent<DamageTaker>().Damage();
-				GameManager.self.PawnActionFinished();
 				break;
 			}
 		}

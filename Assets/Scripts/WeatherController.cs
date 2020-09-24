@@ -87,10 +87,11 @@ public class WeatherController : MonoBehaviour
 	public void NextForecast()
 	{
 		if (moveForecast.Count > 0)
-		{
 			moveForecast.RemoveAt(0);
+
+		if (windForecast.Count > 0)
 			windForecast.RemoveAt(0);
-		}
+
 		FillForecasts();
 		guiManager.FillForecast(moveForecast.ToArray(), windForecast.ToArray());
 	}

@@ -101,7 +101,6 @@ public class PlayerMech : Pawn
 		base.PhaseInit(windX, windY);
 
 		mechName.text = "hubert";
-		hp.text = (7).ToString();
 	}
 
 	public override void SetActivePawn()

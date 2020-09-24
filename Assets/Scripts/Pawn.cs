@@ -21,22 +21,10 @@ public class Pawn : MonoBehaviour
 	public List<Vector3> targetablePoints;
 	public List<Vector3> targetableDamageTakerPoints;
 
-	private int _hitPoints;
 	[SerializeField] protected TextMeshPro hp;
 	[SerializeField] protected Transform pawnMesh;
 
 	private Vector2Int[] possibleTargetsOffsets;
-
-	protected int HitPoints
-	{
-		get { return _hitPoints; }
-		set
-		{
-			_hitPoints = value;
-			if (hp != null)
-				hp.text = _hitPoints.ToString();
-		}
-	}
 
 	bool performingAction;
 
@@ -47,7 +35,7 @@ public class Pawn : MonoBehaviour
 
 	protected virtual void Start()
 	{
-		HitPoints = 1;
+
 	}
 
 	public void GetPersonalMap(Vector3 startPos, int distance)
@@ -367,5 +355,11 @@ public class Pawn : MonoBehaviour
 	public virtual void SetActivePawn()
 	{
 
+	}
+
+	public void SetHPtext(int currentHP)
+	{
+		if (hp != null)
+			hp.text = currentHP.ToString();
 	}
 }

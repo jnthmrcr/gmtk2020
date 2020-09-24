@@ -8,9 +8,18 @@ public class DamageTaker : MonoBehaviour
 	[SerializeField] int hitPointsCurrent;
 	[SerializeField] GameObject deathPrefab;
 
+	Pawn pawn;
+
+	private void Awake()
+	{
+		pawn = GetComponent<Pawn>();
+	}
+
 	private void Start()
 	{
 		hitPointsCurrent = hitpointsStarting;
+		if (pawn != null)
+			pawn.SetHPtext(hitPointsCurrent);
 	}
 
 	public void Damage(int points = 1)
@@ -18,6 +27,10 @@ public class DamageTaker : MonoBehaviour
 		GameManager.self.PawnActionFinished();
 
 		hitPointsCurrent -= points;
+
+		if (pawn != null)
+			pawn.SetHPtext(hitPointsCurrent);
+
 		if (hitPointsCurrent <= 0)
 		{
 			// mark for death

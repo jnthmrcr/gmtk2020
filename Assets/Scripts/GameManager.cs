@@ -5,10 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	public static GameManager self;
+    public GUIManager guiManager;
 
-	public enum turnPhase { environment, enemy, player, none }
+    public enum turnPhase { environment, enemy, player, none }
 	public turnPhase currentTurnPhase;
 	public int currentTurn;
+	public int turnActions;
 	[HideInInspector] public MainMap mainMap;
 	PlayerController player;
 	EnemyManager enemyManager;
@@ -109,4 +111,13 @@ public class GameManager : MonoBehaviour
 				break;
 		}
 	}
+
+	public void UseTurnAction() {
+        turnActions--;
+        guiManager.FillAction(turnActions);
+
+		if (turnActions <= 0) {
+            EndPlayerPhase();
+        }
+    }
 }

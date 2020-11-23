@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WeatherController : MonoBehaviour
 {
-	public GUIManager guiManager;
-
 	public int forecastLength = 6;
 
 	public int movePeriod = 6; // the sum of the actions in this length of forecast will give you the amplitude avg
@@ -93,6 +91,7 @@ public class WeatherController : MonoBehaviour
 			windForecast.RemoveAt(0);
 
 		FillForecasts();
-		guiManager.FillForecast(moveForecast.ToArray(), windForecast.ToArray());
+		GameManager.self.guiManager.FillForecast(moveForecast.ToArray(), windForecast.ToArray());
+		GameManager.self.turnActions = moveForecast[0];
 	}
 }

@@ -80,6 +80,11 @@ public class GUIManager : MonoBehaviour
 		}
 	}
 
+	public void FillAction(int actions)
+	{
+		actionText.text = actions.ToString();
+	}
+
 	public void BtnForcast()
 	{
 		inforcast = true;

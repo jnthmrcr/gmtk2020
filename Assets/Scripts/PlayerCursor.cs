@@ -84,6 +84,7 @@ public class PlayerCursor : MonoBehaviour
 						{
 							dt.Damage();
 							StartCoroutine(waitplz());
+							GameManager.self.UseTurnAction();
 						}
 						else
 						{
@@ -93,6 +94,7 @@ public class PlayerCursor : MonoBehaviour
 					else if (hitMove)
 					{
 						playerController.activeMech.Move(goalPoint);
+						GameManager.self.UseTurnAction();
 					}
 				}
 				else

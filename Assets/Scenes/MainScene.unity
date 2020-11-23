@@ -3324,8 +3324,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d86b528a4e3b34d8a38901b6aabc9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guiManager: {fileID: 1694639055}
   currentTurnPhase: 0
   currentTurn: 0
+  turnActions: 0
   mainMap: {fileID: 0}
 --- !u!4 &702568112
 Transform:
@@ -3428,7 +3430,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207a9fe1feca3f4429713ebfa224544b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guiManager: {fileID: 1694639055}
   forecastLength: 8
   movePeriod: 6
   moveAmplitudeAvg: 5
@@ -11892,7 +11893,7 @@ PrefabInstance:
     - target: {fileID: 5723751740998923139, guid: 2e7c0c845a4b8b54ebbad8a8f6aabab3,
         type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: GUI
       objectReference: {fileID: 0}
     - target: {fileID: 5723751740998923144, guid: 2e7c0c845a4b8b54ebbad8a8f6aabab3,
         type: 3}

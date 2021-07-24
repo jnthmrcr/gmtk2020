@@ -80,9 +80,11 @@ public class GameManager : MonoBehaviour
 				NextPhase();
 				break;
 			case turnPhase.enemy:
-				enemyManager.SetPhaseActive();
+                guiManager.DisplayGameMessage("enemy phase");
+                enemyManager.SetPhaseActive();
 				break;
 			case turnPhase.player:
+				guiManager.DisplayGameMessage("player phase");
 				player.SetPhaseActive(true);
 				break;
 			case turnPhase.none:

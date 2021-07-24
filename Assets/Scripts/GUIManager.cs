@@ -22,7 +22,9 @@ public class GUIManager : MonoBehaviour
 	[SerializeField] Text actionText;
 	[SerializeField] UI_WindDisplay windDisplay;
 
-	bool gamestarted = false;
+    [SerializeField] Text messageBox;
+
+    bool gamestarted = false;
 	bool inmenu = false;
 	bool inhowto = false;
 	bool inforcast = false;
@@ -98,6 +100,10 @@ public class GUIManager : MonoBehaviour
 		menuBG.SetActive(false);
 		forecastParent.SetActive(false);
 	}
+
+	public void DisplayGameMessage(string message) {
+        messageBox.text = message;
+    }
 
 	public void BtnMenu()
 	{

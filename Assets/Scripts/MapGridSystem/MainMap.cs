@@ -103,7 +103,7 @@ public class MainMap : MonoBehaviour
 
 		Gizmos.DrawWireCube(transform.position, new Vector3(grid.sizeX, 1, grid.sizeY));
 
-		Handles.Label(transform.position + Vector3.back * (mapWorldSize.y + 1), grid.nodes.Length.ToString());
+		// Handles.Label(transform.position + Vector3.back * (mapWorldSize.y + 1), grid.nodes.Length.ToString());
 
 		if (grid != null)
 		{

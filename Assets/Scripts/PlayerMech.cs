@@ -84,7 +84,7 @@ public class PlayerMech : Pawn
 			foreach (MapNode n in navigableNodes)
 			{
 				//Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.8f);
-				Handles.Label(n.worldPosition, n.cost.ToString());
+				// Handles.Label(n.worldPosition, n.cost.ToString());
 			}
 
 		}
